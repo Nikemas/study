@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { sendMessageToAI } from '../services/aiService';
 import { AI_CONFIG } from '../config/aiConfig';
 import { INITIAL_MESSAGE } from '../data/courseData';
+import { generateId } from '../utils/generateId';
+import { ROLES } from '../constants';
 
 export const useChat = (onSaveChat) => {
   const [messages, setMessages] = useState([INITIAL_MESSAGE]);
@@ -14,10 +16,10 @@ export const useChat = (onSaveChat) => {
     if (!userQuestion.trim() || loading) return;
 
     const userMessage = {
-      role: 'user',
+      role: ROLES.USER,
       content: userQuestion,
       timestamp: new Date(),
-      id: Date.now()
+      id: generateId()
     };
 
     const newMessages = [...messages, userMessage];
@@ -33,27 +35,36 @@ export const useChat = (onSaveChat) => {
         }));
 
       const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory);
-      
+
       const aiResponse = {
-        role: 'assistant',
+        role: ROLES.ASSISTANT,
         content: aiResponseText,
         timestamp: new Date(),
-        id: Date.now() + 1
+        id: generateId()
       };
 
       const finalMessages = [...newMessages, aiResponse];
       setMessages(finalMessages);
-      
-      // Сохраняем в историю
+
       if (onSaveChat) {
         onSaveChat(finalMessages);
       }
     } catch (error) {
+      const errorContent = error.message.includes('API ключ')
+        ? error.message
+        : error.message.includes('лимит')
+        ? 'Превышен лимит запросов. Подождите немного и попробуйте снова.'
+        : error.message.includes('Некорректный ответ')
+        ? 'Получен некорректный ответ от сервера. Попробуйте повторить запрос.'
+        : error.message.includes('недоступен')
+        ? error.message
+        : `Ошибка: ${error.message}`;
+
       const errorMessage = {
-        role: 'assistant',
-        content: 'Извините, произошла ошибка при обработке запроса. Проверьте API ключ в .env файле.',
+        role: ROLES.ASSISTANT,
+        content: errorContent,
         timestamp: new Date(),
-        id: Date.now() + 1,
+        id: generateId(),
         error: true
       };
       setMessages([...newMessages, errorMessage]);
@@ -78,11 +89,11 @@ export const useChat = (onSaveChat) => {
     );
   };
 
-  return { 
-    messages, 
-    loading, 
-    sendMessage, 
-    clearHistory, 
+  return {
+    messages,
+    loading,
+    sendMessage,
+    clearHistory,
     loadMessages,
     updateMessageRating
   };

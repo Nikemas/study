@@ -4,14 +4,20 @@ import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from '../../hooks/useTheme';
 
-export const CodeBlock = ({ language, value, theme }) => {
+export const CodeBlock = ({ language, value }) => {
+  const { theme } = useTheme();
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
   };
 
   return (
@@ -20,11 +26,12 @@ export const CodeBlock = ({ language, value, theme }) => {
         onClick={handleCopy}
         className="absolute right-2 top-2 p-2 rounded bg-gray-700 hover:bg-gray-600 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
         title="Копировать код"
+        aria-label={copied ? 'Код скопирован' : 'Копировать код'}
       >
         {copied ? (
-          <Check className="w-4 h-4 text-green-400" />
+          <Check className="w-4 h-4 text-green-400" aria-hidden="true" />
         ) : (
-          <Copy className="w-4 h-4" />
+          <Copy className="w-4 h-4" aria-hidden="true" />
         )}
       </button>
       <SyntaxHighlighter

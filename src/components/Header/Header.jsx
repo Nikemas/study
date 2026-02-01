@@ -1,16 +1,18 @@
+// src/components/Header/Header.jsx
 
+import PropTypes from 'prop-types';
 import { Book, MessageSquare, Database, History } from 'lucide-react';
+import { useTheme } from '../../hooks/useTheme';
 import { TabButton } from '../UI/TabButton';
 import { ThemeToggle } from './ThemeToggle';
+import { themeClasses } from '../../utils/themeUtils';
 
-export const Header = ({ activeTab, setActiveTab, theme, onToggleTheme }) => {
+export const Header = ({ activeTab, setActiveTab }) => {
+  const { theme } = useTheme();
+
   return (
-    <div
-      className={`${
-        theme === 'dark'
-          ? 'bg-gray-800 border-gray-700'
-          : 'bg-white border-gray-200'
-      } shadow-md border-b transition-colors`}
+    <header
+      className={`${themeClasses.card(theme)} shadow-md border-b transition-colors`}
     >
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
@@ -20,33 +22,24 @@ export const Header = ({ activeTab, setActiveTab, theme, onToggleTheme }) => {
               <Book className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1
-                className={`text-xl font-bold ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}
-              >
+              <h1 className={`text-xl font-bold ${themeClasses.text(theme)}`}>
                 Образовательная платформа
               </h1>
-              <p
-                className={`text-sm ${
-                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                }`}
-              >
+              <p className={`text-sm ${themeClasses.textMuted(theme)}`}>
                 AI-помощник по веб-разработке
               </p>
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="flex gap-2 items-center flex-wrap">
-            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+          <nav className="flex gap-2 items-center flex-wrap">
+            <ThemeToggle />
 
             <TabButton
               active={activeTab === 'chat'}
               onClick={() => setActiveTab('chat')}
               icon={<MessageSquare className="w-4 h-4" />}
               label="Чат"
-              theme={theme}
             />
 
             <TabButton
@@ -54,7 +47,6 @@ export const Header = ({ activeTab, setActiveTab, theme, onToggleTheme }) => {
               onClick={() => setActiveTab('history')}
               icon={<History className="w-4 h-4" />}
               label="История"
-              theme={theme}
             />
 
             <TabButton
@@ -62,11 +54,15 @@ export const Header = ({ activeTab, setActiveTab, theme, onToggleTheme }) => {
               onClick={() => setActiveTab('knowledge')}
               icon={<Database className="w-4 h-4" />}
               label="База знаний"
-              theme={theme}
             />
-          </div>
+          </nav>
         </div>
       </div>
-    </div>
+    </header>
   );
+};
+
+Header.propTypes = {
+  activeTab: PropTypes.oneOf(['chat', 'history', 'knowledge']).isRequired,
+  setActiveTab: PropTypes.func.isRequired
 };

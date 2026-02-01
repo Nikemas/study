@@ -1,19 +1,25 @@
 // src/components/Chat/ChatInput.jsx
 
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Send, Trash2 } from 'lucide-react';
+import { useTheme } from '../../hooks/useTheme';
+import { themeClasses } from '../../utils/themeUtils';
+import { LIMITS } from '../../constants';
 
-export const ChatInput = ({ onSend, onClear, loading, theme }) => {
+export const ChatInput = ({ onSend, onClear, loading }) => {
+  const { theme } = useTheme();
   const [input, setInput] = useState('');
 
   const handleSend = () => {
-    if (input.trim() && !loading) {
-      onSend(input);
+    const trimmedInput = input.trim();
+    if (trimmedInput && !loading && trimmedInput.length <= LIMITS.MAX_MESSAGE_LENGTH) {
+      onSend(trimmedInput);
       setInput('');
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -21,31 +27,27 @@ export const ChatInput = ({ onSend, onClear, loading, theme }) => {
   };
 
   return (
-    <div
-      className={`${
-        theme === 'dark'
-          ? 'bg-gray-800 border-gray-700'
-          : 'bg-white border-gray-200'
-      } border rounded-lg shadow-md p-4`}
-    >
+    <div className={`${themeClasses.card(theme)} border rounded-lg shadow-md p-4`}>
       <div className="flex gap-2 mb-2">
+        <label htmlFor="chat-input" className="sr-only">
+          Введите ваш вопрос
+        </label>
         <input
+          id="chat-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder="Задайте вопрос по курсу..."
-          className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ${
-            theme === 'dark'
-              ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-          }`}
+          maxLength={LIMITS.MAX_MESSAGE_LENGTH}
+          className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ${themeClasses.input(theme)}`}
           disabled={loading}
         />
         <button
           onClick={handleSend}
           disabled={loading || !input.trim()}
           className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition flex items-center gap-2 shadow-sm"
+          aria-label="Отправить сообщение"
         >
           <Send className="w-4 h-4" />
           <span className="hidden sm:inline">Отправить</span>
@@ -58,17 +60,20 @@ export const ChatInput = ({ onSend, onClear, loading, theme }) => {
               : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
           title="Новый диалог"
+          aria-label="Начать новый диалог"
         >
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
-      <div
-        className={`text-xs ${
-          theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-        }`}
-      >
+      <div className={`text-xs ${themeClasses.textMuted(theme)}`}>
         Примеры: "Что такое useState?", "Как работает flex?", "Объясни async/await"
       </div>
     </div>
   );
+};
+
+ChatInput.propTypes = {
+  onSend: PropTypes.func.isRequired,
+  onClear: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };

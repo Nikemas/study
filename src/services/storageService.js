@@ -22,8 +22,13 @@ export const saveChatHistory = (history) => {
 };
 
 export const getChatHistory = () => {
-  const history = localStorage.getItem(STORAGE_KEYS.CHAT_HISTORY);
-  return history ? JSON.parse(history) : [];
+  try {
+    const history = localStorage.getItem(STORAGE_KEYS.CHAT_HISTORY);
+    return history ? JSON.parse(history) : [];
+  } catch (error) {
+    console.error('Ошибка при чтении истории чатов:', error);
+    return [];
+  }
 };
 
 export const saveCurrentChatId = (chatId) => {
