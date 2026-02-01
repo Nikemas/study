@@ -1,70 +1,199 @@
-# Getting Started with Create React App
+# 🎓 Образовательная AI-платформа для веб-разработки
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Интерактивная образовательная платформа с AI-помощником для изучения веб-разработки. Проект построен на React и использует Groq API для интеллектуальных ответов на вопросы студентов.
 
-## Available Scripts
+![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat&logo=react&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.1-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-API-orange?style=flat)
 
-In the project directory, you can run:
+## ✨ Возможности
 
-### `yarn start`
+- 💬 **AI-чат помощник** - интеллектуальный помощник на базе Groq API для ответов на вопросы по программированию
+- 📚 **База знаний** - структурированные материалы по Python, JavaScript, HTML, CSS и React
+- 📜 **История чатов** - сохранение и загрузка предыдущих диалогов
+- 🌓 **Темная/светлая тема** - переключение между темами оформления
+- ⭐ **Оценка ответов** - возможность оценивать качество ответов AI
+- 📱 **Адаптивный дизайн** - работает на всех устройствах
+- 🎨 **Подсветка синтаксиса** - красивое отображение примеров кода
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Технологии
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Frontend**: React 18.2.0
+- **Стилизация**: TailwindCSS 3.4.1
+- **AI**: Groq API (llama-3.3-70b-versatile)
+- **Иконки**: Lucide React
+- **Markdown**: React Markdown + React Syntax Highlighter
+- **Хранение данных**: LocalStorage
 
-### `yarn test`
+## 📋 Предварительные требования
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js (версия 14 или выше)
+- npm или yarn
+- API ключ от [Groq](https://console.groq.com/)
 
-### `yarn build`
+## 🚀 Установка и запуск
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Клонирование репозитория
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone <url-вашего-репозитория>
+cd study
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Установка зависимостей
 
-### `yarn eject`
+```bash
+npm install
+# или
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3. Настройка переменных окружения
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Создайте файл `.env` в корневой директории проекта:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```env
+REACT_APP_GROQ_API_KEY=ваш_api_ключ_groq
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+> **Важно!** Получите бесплатный API ключ на [console.groq.com](https://console.groq.com/)
 
-## Learn More
+### 4. Запуск приложения
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm start
+# или
+yarn start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Приложение откроется по адресу [http://localhost:3000](http://localhost:3000)
 
-### Code Splitting
+## 📁 Структура проекта
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+study/
+├── public/
+│   └── index.html          # HTML шаблон
+├── src/
+│   ├── components/         # React компоненты
+│   │   ├── Chat/          # Компоненты чата
+│   │   ├── Header/        # Компоненты шапки
+│   │   ├── History/       # Компоненты истории
+│   │   ├── Knowledge/     # Компоненты базы знаний
+│   │   └── UI/            # UI компоненты
+│   ├── config/            # Конфигурация
+│   │   └── aiConfig.js    # Настройки AI
+│   ├── data/              # Данные курсов
+│   ├── hooks/             # Custom React hooks
+│   │   ├── useChat.js     # Хук для чата
+│   │   ├── useChatHistory.js  # Хук для истории
+│   │   └── useTheme.js    # Хук для темы
+│   ├── services/          # Сервисы
+│   │   ├── aiService.js   # Сервис работы с AI
+│   │   ├── contextBuilder.js  # Построение контекста
+│   │   └── storageService.js  # Работа с LocalStorage
+│   ├── utils/             # Утилиты
+│   ├── App.jsx            # Главный компонент
+│   ├── App.css            # Стили приложения
+│   ├── index.js           # Точка входа
+│   └── index.css          # Глобальные стили
+├── .env                   # Переменные окружения (не в git)
+├── .gitignore            # Игнорируемые файлы
+├── package.json          # Зависимости проекта
+├── tailwind.config.js    # Конфигурация Tailwind
+└── README.md             # Документация
+```
 
-### Analyzing the Bundle Size
+## 🎯 Основные компоненты
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Chat (Чат)
+- `ChatView.jsx` - главный компонент чата
+- `ChatInput.jsx` - поле ввода сообщений
+- `MessageList.jsx` - список сообщений
+- `Message.jsx` - отдельное сообщение
 
-### Making a Progressive Web App
+### Knowledge (База знаний)
+- `KnowledgeView.jsx` - отображение материалов курса
+- Поддержка тем: Python, JavaScript, HTML, CSS, React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### History (История)
+- `HistoryView.jsx` - список сохраненных чатов
+- Возможность загрузки и удаления чатов
 
-### Advanced Configuration
+## 🧩 Доступные скрипты
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### `npm start` или `yarn start`
+Запускает приложение в режиме разработки.
 
-### Deployment
+### `npm test` или `yarn test`
+Запускает тесты в интерактивном режиме.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### `npm run build` или `yarn build`
+Создает production сборку в папке `build/`.
 
-### `yarn build` fails to minify
+### `npm run eject` или `yarn eject`
+⚠️ **Необратимая операция!** Извлекает конфигурацию Create React App.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🎨 Темы курса
+
+Платформа охватывает следующие темы:
+
+- 🐍 **Python** - переменные, циклы, функции, списки
+- ⚡ **JavaScript** - ES6+, async/await, массивы, функции
+- 📄 **HTML** - семантика, формы, структура
+- 🎨 **CSS** - flexbox, grid, адаптивность
+- ⚛️ **React** - хуки, компоненты, JSX, props
+
+## 🔧 Конфигурация AI
+
+Настройки AI находятся в `src/config/aiConfig.js`:
+
+```javascript
+{
+  apiUrl: 'https://api.groq.com/openai/v1/chat/completions',
+  model: 'llama-3.3-70b-versatile',
+  maxTokens: 1024,
+  temperature: 0.7
+}
+```
+
+## 💾 Хранение данных
+
+Приложение использует LocalStorage для:
+- Сохранения истории чатов
+- Хранения настроек темы
+- Кэширования сообщений
+
+## 🤝 Вклад в проект
+
+Приветствуются любые предложения и улучшения! Для внесения изменений:
+
+1. Сделайте Fork проекта
+2. Создайте ветку для новой функции (`git checkout -b feature/AmazingFeature`)
+3. Зафиксируйте изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Отправьте в ветку (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
+
+## 📝 Лицензия
+
+Этот проект создан в образовательных целях.
+
+## 🐛 Известные проблемы
+
+- Требуется активный API ключ Groq для работы чата
+- История чатов хранится только в браузере (LocalStorage)
+
+## 📞 Контакты
+
+Если у вас есть вопросы или предложения, создайте Issue в репозитории.
+
+## 🙏 Благодарности
+
+- [Groq](https://groq.com/) за предоставление API
+- [Create React App](https://create-react-app.dev/) за базовую структуру
+- [Lucide](https://lucide.dev/) за иконки
+- [TailwindCSS](https://tailwindcss.com/) за стилизацию
+
+---
+
+Сделано с ❤️ для изучения веб-разработки
