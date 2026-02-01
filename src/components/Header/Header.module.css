@@ -1,0 +1,34 @@
+/* src/components/Header/Header.module.css */
+
+.header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.logoIcon {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .header {
+    padding: 0.75rem;
+  }
+  
+  .logoText h1 {
+    font-size: 1rem;
+  }
+  
+  .logoText p {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,24 @@
+/* src/components/History/History.module.css */
+
+.historyContainer {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.historyItem {
+  transition: all 0.2s ease;
+}
+
+.historyItem:hover {
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

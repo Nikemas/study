@@ -1,0 +1,32 @@
+/* src/components/Knowledge/Knowledge.module.css */
+
+.knowledgeContainer {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.materialCard {
+  transition: all 0.2s ease;
+}
+
+.materialCard:hover {
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .categoryFilter {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
