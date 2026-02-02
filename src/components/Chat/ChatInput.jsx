@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Send, Trash2 } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { themeClasses } from '../../utils/themeUtils';
 import { LIMITS } from '../../constants';
 
-export const ChatInput = ({ onSend, onClear, loading }) => {
+export const ChatInput = ({ onSend, loading }) => {
   const { theme } = useTheme();
   const { t } = useLanguage();
   const [input, setInput] = useState('');
@@ -54,18 +54,6 @@ export const ChatInput = ({ onSend, onClear, loading }) => {
           <Send className="w-4 h-4" />
           <span className="hidden sm:inline">{t('chat.send')}</span>
         </button>
-        <button
-          onClick={onClear}
-          className={`px-4 py-3 rounded-lg transition ${
-            theme === 'dark'
-              ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-          }`}
-          title={t('chat.newChat')}
-          aria-label={t('chat.newChatLabel')}
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
       </div>
       <div className={`text-xs ${themeClasses.textMuted(theme)}`}>
         {t('chat.examples')}
@@ -76,6 +64,5 @@ export const ChatInput = ({ onSend, onClear, loading }) => {
 
 ChatInput.propTypes = {
   onSend: PropTypes.func.isRequired,
-  onClear: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired
 };

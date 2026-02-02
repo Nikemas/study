@@ -30,6 +30,11 @@ export const Header = ({ activeTab, setActiveTab, progressKey = 0 }) => {
       className={`${themeClasses.card(theme)} shadow-md border-b transition-colors`}
     >
       <div className="max-w-7xl mx-auto px-4 py-4">
+        {/* Top row with language selector */}
+        <div className="flex items-center justify-end mb-3">
+          <LanguageSelector />
+        </div>
+
         <div className="flex items-center justify-between flex-wrap gap-4">
           {/* Logo */}
           <div className="flex items-center gap-3">
@@ -77,7 +82,6 @@ export const Header = ({ activeTab, setActiveTab, progressKey = 0 }) => {
 
           {/* Navigation */}
           <nav className="flex gap-2 items-center flex-wrap">
-            <LanguageSelector />
             <ThemeToggle />
 
             <button

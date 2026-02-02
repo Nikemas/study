@@ -8,7 +8,7 @@ import { Message } from './Message';
 import { ChatInput } from './ChatInput';
 import { LoadingIndicator } from './LoadingIndicator';
 
-export const ChatView = ({ messages, loading, onSend, onClear, onRate }) => {
+export const ChatView = ({ messages, loading, onSend, onRate }) => {
   const { theme } = useTheme();
   const messagesEndRef = useRef(null);
 
@@ -30,7 +30,7 @@ export const ChatView = ({ messages, loading, onSend, onClear, onRate }) => {
       </div>
 
       {/* Input */}
-      <ChatInput onSend={onSend} onClear={onClear} loading={loading} />
+      <ChatInput onSend={onSend} loading={loading} />
     </div>
   );
 };
@@ -45,6 +45,5 @@ ChatView.propTypes = {
   ).isRequired,
   loading: PropTypes.bool.isRequired,
   onSend: PropTypes.func.isRequired,
-  onClear: PropTypes.func.isRequired,
   onRate: PropTypes.func.isRequired
 };

@@ -116,7 +116,6 @@ function AppContent() {
                     messages={messages}
                     loading={loading}
                     onSend={sendMessage}
-                    onClear={handleNewChat}
                     onRate={handleRate}
                   />
                 </motion.div>
