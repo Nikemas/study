@@ -161,6 +161,188 @@ export const COURSE_DATA = {
       }
     ]
   },
+  quizzes: {
+    python: {
+      id: 'quiz_python',
+      title: 'Тест по Python',
+      questions: [
+        {
+          id: 1,
+          question: 'Какой тип данных вернёт выражение type(3.14)?',
+          options: ['int', 'float', 'str', 'number'],
+          correctAnswer: 1
+        },
+        {
+          id: 2,
+          question: 'Какой цикл используется для перебора элементов списка?',
+          options: ['while', 'for', 'loop', 'each'],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: 'Как определить функцию в Python?',
+          options: ['function myFunc()', 'def myFunc():', 'fn myFunc()', 'func myFunc():'],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: 'Какой метод добавляет элемент в конец списка?',
+          options: ['add()', 'push()', 'append()', 'insert()'],
+          correctAnswer: 2
+        },
+        {
+          id: 5,
+          question: 'Что выведет print(len([1, 2, 3]))?',
+          options: ['[1, 2, 3]', '3', 'error', '6'],
+          correctAnswer: 1
+        }
+      ]
+    },
+    javascript: {
+      id: 'quiz_javascript',
+      title: 'Тест по JavaScript',
+      questions: [
+        {
+          id: 1,
+          question: 'Какое ключевое слово создаёт константу?',
+          options: ['var', 'let', 'const', 'constant'],
+          correctAnswer: 2
+        },
+        {
+          id: 2,
+          question: 'Чем стрелочная функция отличается от обычной?',
+          options: ['Быстрее работает', 'Не имеет собственного this', 'Не может принимать аргументы', 'Всегда асинхронная'],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: 'Какой метод массива создаёт новый массив с отфильтрованными элементами?',
+          options: ['map()', 'filter()', 'reduce()', 'forEach()'],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: 'Что возвращает async функция?',
+          options: ['undefined', 'null', 'Promise', 'callback'],
+          correctAnswer: 2
+        },
+        {
+          id: 5,
+          question: 'Какой метод НЕ возвращает новый массив?',
+          options: ['map()', 'filter()', 'forEach()', 'slice()'],
+          correctAnswer: 2
+        }
+      ]
+    },
+    html: {
+      id: 'quiz_html',
+      title: 'Тест по HTML',
+      questions: [
+        {
+          id: 1,
+          question: 'Какой тег используется для основного контента страницы?',
+          options: ['<div>', '<main>', '<content>', '<body>'],
+          correctAnswer: 1
+        },
+        {
+          id: 2,
+          question: 'Какой тег создаёт навигационное меню?',
+          options: ['<menu>', '<nav>', '<navigation>', '<header>'],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: 'Какой атрибут input делает поле обязательным?',
+          options: ['mandatory', 'required', 'validate', 'necessary'],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: 'Где размещается тег <title>?',
+          options: ['<body>', '<head>', '<header>', '<main>'],
+          correctAnswer: 1
+        },
+        {
+          id: 5,
+          question: 'Какой тег используется для подвала страницы?',
+          options: ['<bottom>', '<footer>', '<end>', '<closing>'],
+          correctAnswer: 1
+        }
+      ]
+    },
+    css: {
+      id: 'quiz_css',
+      title: 'Тест по CSS',
+      questions: [
+        {
+          id: 1,
+          question: 'Какой селектор имеет наивысший приоритет?',
+          options: ['Класс (.class)', 'ID (#id)', 'Элемент (div)', 'Псевдокласс (:hover)'],
+          correctAnswer: 1
+        },
+        {
+          id: 2,
+          question: 'Какое свойство создаёт flex-контейнер?',
+          options: ['flex: 1', 'display: flex', 'flex-direction: row', 'justify-content: center'],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: 'Для чего используется justify-content?',
+          options: ['Выравнивание по поперечной оси', 'Выравнивание по главной оси', 'Отступы между элементами', 'Направление flex'],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: 'Какое свойство создаёт grid-контейнер?',
+          options: ['grid: on', 'display: grid', 'grid-template: auto', 'grid-columns: 1fr'],
+          correctAnswer: 1
+        },
+        {
+          id: 5,
+          question: 'Какая единица относительна к размеру viewport?',
+          options: ['rem', 'em', 'vw', '%'],
+          correctAnswer: 2
+        }
+      ]
+    },
+    react: {
+      id: 'quiz_react',
+      title: 'Тест по React',
+      questions: [
+        {
+          id: 1,
+          question: 'Что возвращает хук useState?',
+          options: ['Только значение', 'Только функцию', 'Массив [значение, функция]', 'Объект {value, setter}'],
+          correctAnswer: 2
+        },
+        {
+          id: 2,
+          question: 'Для чего нужен useEffect?',
+          options: ['Создание состояния', 'Побочные эффекты', 'Маршрутизация', 'Валидация props'],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: 'Как передать данные от родителя к ребёнку?',
+          options: ['state', 'props', 'context', 'refs'],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: 'Что обязательно при рендеринге списка?',
+          options: ['className', 'key', 'id', 'index'],
+          correctAnswer: 1
+        },
+        {
+          id: 5,
+          question: 'Какой атрибут заменяет class в JSX?',
+          options: ['cssClass', 'className', 'class', 'htmlClass'],
+          correctAnswer: 1
+        }
+      ]
+    }
+  },
   faq: [
     {
       id: 1,
@@ -221,4 +403,12 @@ export const getMaterialsByCategory = (category) => {
 export const getFAQByCategory = (category) => {
   if (!category || category === 'all') return COURSE_DATA.faq;
   return COURSE_DATA.faq.filter(item => item.category === category);
+};
+
+export const getQuizByCategory = (category) => {
+  return COURSE_DATA.quizzes[category] || null;
+};
+
+export const getAllQuizIds = () => {
+  return Object.values(COURSE_DATA.quizzes).map(quiz => quiz.id);
 };

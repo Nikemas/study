@@ -15,8 +15,27 @@ export const API_ERROR_CODES = {
   INVALID_RESPONSE: 'errors.invalidResponse'
 };
 
-export const sendMessageToAI = async (question, conversationHistory, language = 'ru') => {
-  const apiKey = process.env.REACT_APP_GROQ_API_KEY;
+// Получение API ключа из localStorage или env
+export const getApiKey = () => {
+  return localStorage.getItem('groq_api_key') || process.env.REACT_APP_GROQ_API_KEY || '';
+};
+
+// Сохранение API ключа в localStorage
+export const saveApiKey = (key) => {
+  if (key) {
+    localStorage.setItem('groq_api_key', key);
+  } else {
+    localStorage.removeItem('groq_api_key');
+  }
+};
+
+// Проверка наличия API ключа
+export const hasApiKey = () => {
+  return Boolean(getApiKey());
+};
+
+export const sendMessageToAI = async (question, conversationHistory, language = 'ru', contextOptions = {}) => {
+  const apiKey = getApiKey();
 
   if (!apiKey) {
     const error = new Error(API_ERROR_CODES.API_KEY_NOT_FOUND);
@@ -24,7 +43,7 @@ export const sendMessageToAI = async (question, conversationHistory, language = 
     throw error;
   }
 
-  const context = buildContextFromKnowledge(question);
+  const context = buildContextFromKnowledge(question, contextOptions);
   const systemPrompt = createSystemPrompt(context, language);
 
   const messages = [

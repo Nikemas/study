@@ -60,12 +60,50 @@ export default {
     copy: 'Copy',
     copied: 'Copied!'
   },
+  apiKey: {
+    title: 'API Settings',
+    settings: 'API key settings',
+    description: 'Enter your Groq API key to use the AI assistant.',
+    placeholder: 'gsk_...',
+    save: 'Save',
+    clear: 'Clear',
+    showKey: 'Show key',
+    hideKey: 'Hide key',
+    getKeyText: 'Get your key at'
+  },
   errors: {
-    apiKeyNotFound: 'API key not found! Create a .env file and add: REACT_APP_GROQ_API_KEY=your-key',
+    apiKeyNotFound: 'API key not found! Click the gear icon in the header and enter your Groq API key.',
     invalidApiKey: 'Invalid Groq API key',
     rateLimitExceeded: 'Groq rate limit exceeded',
     serverUnavailable: 'Server temporarily unavailable. Please try again later.',
     apiError: 'Error connecting to Groq',
     invalidResponse: 'Invalid API response'
+  },
+  quiz: {
+    title: 'Quiz',
+    takeQuiz: 'Take Quiz',
+    question: 'Question',
+    of: 'of',
+    checkAnswer: 'Check',
+    next: 'Next',
+    finish: 'Finish',
+    correct: 'Correct!',
+    incorrect: 'Incorrect',
+    correctAnswer: 'Correct answer',
+    results: 'Quiz Results',
+    score: 'Your score',
+    passed: 'Quiz passed!',
+    failed: 'Try again',
+    tryAgain: 'Retry',
+    close: 'Close'
+  },
+  progress: {
+    title: 'Progress',
+    completed: 'Completed',
+    materials: 'Materials',
+    quizzes: 'Quizzes',
+    overall: 'Overall progress',
+    markComplete: 'Mark as read',
+    markIncomplete: 'Unmark'
   }
 };

@@ -60,12 +60,50 @@ export default {
     copy: 'Көчүрүү',
     copied: 'Көчүрүлдү!'
   },
+  apiKey: {
+    title: 'API жөндөөлөрү',
+    settings: 'API ачкыч жөндөөлөрү',
+    description: 'AI жардамчысын колдонуу үчүн Groq API ачкычыңызды киргизиңиз.',
+    placeholder: 'gsk_...',
+    save: 'Сактоо',
+    clear: 'Тазалоо',
+    showKey: 'Ачкычты көрсөтүү',
+    hideKey: 'Ачкычты жашыруу',
+    getKeyText: 'Ачкычты алуу үчүн'
+  },
   errors: {
-    apiKeyNotFound: 'API ачкычы табылган жок! .env файлын түзүп, кошуңуз: REACT_APP_GROQ_API_KEY=сиздин-ачкыч',
+    apiKeyNotFound: 'API ачкычы табылган жок! Баш жактагы тиштүү сөлөкөттү басып, Groq API ачкычыңызды киргизиңиз.',
     invalidApiKey: 'Туура эмес Groq API ачкычы',
     rateLimitExceeded: 'Groq суроо-талап чеги ашты',
     serverUnavailable: 'Сервер убактылуу жеткиликсиз. Кийинчерээк кайра аракет кылыңыз.',
     apiError: 'Groq менен байланышуу катасы',
     invalidResponse: 'API жооп туура эмес'
+  },
+  quiz: {
+    title: 'Тест',
+    takeQuiz: 'Тестти тапшыруу',
+    question: 'Суроо',
+    of: 'ичинен',
+    checkAnswer: 'Текшерүү',
+    next: 'Кийинки',
+    finish: 'Бүтүрүү',
+    correct: 'Туура!',
+    incorrect: 'Туура эмес',
+    correctAnswer: 'Туура жооп',
+    results: 'Тест жыйынтыктары',
+    score: 'Сиздин жыйынтык',
+    passed: 'Тест өттү!',
+    failed: 'Кайра аракет кылыңыз',
+    tryAgain: 'Кайра баштоо',
+    close: 'Жабуу'
+  },
+  progress: {
+    title: 'Прогресс',
+    completed: 'Аяктады',
+    materials: 'Материалдар',
+    quizzes: 'Тесттер',
+    overall: 'Жалпы прогресс',
+    markComplete: 'Окулду деп белгилөө',
+    markIncomplete: 'Белгини алып салуу'
   }
 };

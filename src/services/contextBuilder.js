@@ -66,21 +66,53 @@ const findRelevantFaq = (question) => {
 
 /**
  * Строит контекст из базы знаний для AI
+ * @param {string} question - Вопрос пользователя
+ * @param {Object} options - Дополнительные опции
+ * @param {string} options.activeCategory - Текущая активная категория из UI
+ * @param {string} options.activeTopic - Текущая активная тема из UI
  */
-export const buildContextFromKnowledge = (question) => {
-  const detectedCategory = detectCategory(question);
+export const buildContextFromKnowledge = (question, options = {}) => {
+  const { activeCategory, activeTopic } = options;
+
+  // Используем активную категорию из UI, если она задана, иначе определяем по вопросу
+  const detectedCategory = activeCategory && activeCategory !== 'all'
+    ? activeCategory
+    : detectCategory(question);
+
   const materials = getMaterialsByCategory(detectedCategory);
   const relevantMaterials = findRelevantMaterials(question, materials);
   const relevantFaq = findRelevantFaq(question);
 
   let context = `Курс: ${COURSE_DATA.title}\n`;
-  context += `Категория: ${detectedCategory.toUpperCase()}\n\n`;
+
+  // Если пользователь находится в конкретной категории, подчёркиваем это
+  if (activeCategory && activeCategory !== 'all') {
+    context += `Пользователь изучает раздел: ${activeCategory.toUpperCase()}\n`;
+  }
+
+  // Если есть активная тема, добавляем её
+  if (activeTopic) {
+    context += `Текущая тема: ${activeTopic}\n`;
+  }
+
+  context += `Определённая категория вопроса: ${detectedCategory.toUpperCase()}\n\n`;
 
   if (relevantMaterials.length > 0) {
     context += 'Релевантные материалы курса:\n';
     relevantMaterials.forEach(m => {
       context += `- ${m.topic}: ${m.content}\n\n`;
     });
+  }
+
+  // Если активна категория, но нет релевантных материалов, добавим все материалы категории
+  if (relevantMaterials.length === 0 && activeCategory && activeCategory !== 'all') {
+    const categoryMaterials = getMaterialsByCategory(activeCategory).slice(0, 3);
+    if (categoryMaterials.length > 0) {
+      context += 'Материалы текущего раздела:\n';
+      categoryMaterials.forEach(m => {
+        context += `- ${m.topic}: ${m.content}\n\n`;
+      });
+    }
   }
 
   if (relevantFaq.length > 0) {

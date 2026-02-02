@@ -14,7 +14,7 @@ const createInitialMessage = (content) => ({
   id: 'initial-message'
 });
 
-export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t) => {
+export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, contextOptions = {}) => {
   const initialMessage = useMemo(
     () => createInitialMessage(initialMessageContent),
     [initialMessageContent]
@@ -55,7 +55,7 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t) =
           content: msg.content
         }));
 
-      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory, language);
+      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory, language, contextOptions);
 
       const aiResponse = {
         role: ROLES.ASSISTANT,

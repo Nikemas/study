@@ -5,9 +5,11 @@ import { Copy, Check } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from '../../hooks/useTheme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export const CodeBlock = ({ language, value }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -25,8 +27,8 @@ export const CodeBlock = ({ language, value }) => {
       <button
         onClick={handleCopy}
         className="absolute right-2 top-2 p-2 rounded bg-gray-700 hover:bg-gray-600 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
-        title="Копировать код"
-        aria-label={copied ? 'Код скопирован' : 'Копировать код'}
+        title={copied ? t('common.copied') : t('common.copy')}
+        aria-label={copied ? t('common.copied') : t('common.copy')}
       >
         {copied ? (
           <Check className="w-4 h-4 text-green-400" aria-hidden="true" />

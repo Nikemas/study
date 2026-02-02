@@ -60,13 +60,51 @@ const ruUI = {
     copy: 'Скопировать',
     copied: 'Скопировано!'
   },
+  apiKey: {
+    title: 'Настройки API',
+    settings: 'Настройки API ключа',
+    description: 'Введите ваш Groq API ключ для работы AI-ассистента.',
+    placeholder: 'gsk_...',
+    save: 'Сохранить',
+    clear: 'Очистить',
+    showKey: 'Показать ключ',
+    hideKey: 'Скрыть ключ',
+    getKeyText: 'Получить ключ можно на'
+  },
   errors: {
-    apiKeyNotFound: 'API ключ не найден! Создайте файл .env и добавьте: REACT_APP_GROQ_API_KEY=ваш-ключ',
+    apiKeyNotFound: 'API ключ не найден! Нажмите на шестерёнку в шапке и введите ваш Groq API ключ.',
     invalidApiKey: 'Неверный API ключ Groq',
     rateLimitExceeded: 'Превышен лимит запросов Groq',
     serverUnavailable: 'Сервер временно недоступен. Попробуйте позже.',
     apiError: 'Ошибка при обращении к Groq',
     invalidResponse: 'Некорректный ответ от API'
+  },
+  quiz: {
+    title: 'Тест',
+    takeQuiz: 'Пройти тест',
+    question: 'Вопрос',
+    of: 'из',
+    checkAnswer: 'Проверить',
+    next: 'Далее',
+    finish: 'Завершить',
+    correct: 'Правильно!',
+    incorrect: 'Неправильно',
+    correctAnswer: 'Правильный ответ',
+    results: 'Результаты теста',
+    score: 'Ваш результат',
+    passed: 'Тест пройден!',
+    failed: 'Попробуйте ещё раз',
+    tryAgain: 'Пройти заново',
+    close: 'Закрыть'
+  },
+  progress: {
+    title: 'Прогресс',
+    completed: 'Завершено',
+    materials: 'Материалы',
+    quizzes: 'Тесты',
+    overall: 'Общий прогресс',
+    markComplete: 'Отметить как прочитанное',
+    markIncomplete: 'Отменить отметку'
   }
 };
 
