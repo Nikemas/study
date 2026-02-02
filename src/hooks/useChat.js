@@ -1,16 +1,37 @@
 // src/hooks/useChat.js
 // Хук для управления чатом с AI
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { sendMessageToAI } from '../services/aiService';
 import { AI_CONFIG } from '../config/aiConfig';
-import { INITIAL_MESSAGE } from '../data/courseData';
 import { generateId } from '../utils/generateId';
 import { ROLES } from '../constants';
 
-export const useChat = (onSaveChat) => {
-  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
+const createInitialMessage = (content) => ({
+  role: ROLES.ASSISTANT,
+  content,
+  timestamp: new Date(),
+  id: 'initial-message'
+});
+
+export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t) => {
+  const initialMessage = useMemo(
+    () => createInitialMessage(initialMessageContent),
+    [initialMessageContent]
+  );
+
+  const [messages, setMessages] = useState([initialMessage]);
   const [loading, setLoading] = useState(false);
+
+  // Update initial message when language changes
+  useEffect(() => {
+    setMessages(prev => {
+      if (prev.length === 1 && prev[0].id === 'initial-message') {
+        return [createInitialMessage(initialMessageContent)];
+      }
+      return prev;
+    });
+  }, [initialMessageContent]);
 
   const sendMessage = async (userQuestion) => {
     if (!userQuestion.trim() || loading) return;
@@ -34,7 +55,7 @@ export const useChat = (onSaveChat) => {
           content: msg.content
         }));
 
-      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory);
+      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory, language);
 
       const aiResponse = {
         role: ROLES.ASSISTANT,
@@ -50,15 +71,10 @@ export const useChat = (onSaveChat) => {
         onSaveChat(finalMessages);
       }
     } catch (error) {
-      const errorContent = error.message.includes('API ключ')
-        ? error.message
-        : error.message.includes('лимит')
-        ? 'Превышен лимит запросов. Подождите немного и попробуйте снова.'
-        : error.message.includes('Некорректный ответ')
-        ? 'Получен некорректный ответ от сервера. Попробуйте повторить запрос.'
-        : error.message.includes('недоступен')
-        ? error.message
-        : `Ошибка: ${error.message}`;
+      // Если ошибка имеет код локализации, используем t() для перевода
+      const errorContent = error.code && error.code.startsWith('errors.')
+        ? t(error.code)
+        : t('errors.apiError');
 
       const errorMessage = {
         role: ROLES.ASSISTANT,
@@ -74,7 +90,7 @@ export const useChat = (onSaveChat) => {
   };
 
   const clearHistory = () => {
-    setMessages([INITIAL_MESSAGE]);
+    setMessages([createInitialMessage(initialMessageContent)]);
   };
 
   const loadMessages = (loadedMessages) => {

@@ -4,7 +4,8 @@
 const STORAGE_KEYS = {
   THEME: 'app_theme',
   CHAT_HISTORY: 'chat_history',
-  CURRENT_CHAT: 'current_chat_id'
+  CURRENT_CHAT: 'current_chat_id',
+  LANGUAGE: 'app_language'
 };
 
 // Тема
@@ -43,4 +44,13 @@ export const clearStorage = () => {
   Object.values(STORAGE_KEYS).forEach(key => {
     localStorage.removeItem(key);
   });
+};
+
+// Язык
+export const saveLanguage = (language) => {
+  localStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
+};
+
+export const getLanguage = () => {
+  return localStorage.getItem(STORAGE_KEYS.LANGUAGE) || 'ru';
 };

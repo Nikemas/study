@@ -1,10 +1,12 @@
 // src/components/Knowledge/CategoryFilter.jsx
 
+import PropTypes from 'prop-types';
 import { useTheme } from '../../hooks/useTheme';
-import { COURSE_DATA } from '../../data/courseData';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-export const CategoryFilter = ({ selectedCategory, onSelectCategory }) => {
+export const CategoryFilter = ({ selectedCategory, onSelectCategory, courses }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   const getButtonClass = (isActive) => {
     if (isActive) {
@@ -16,7 +18,7 @@ export const CategoryFilter = ({ selectedCategory, onSelectCategory }) => {
   };
 
   return (
-    <nav className="flex gap-2 mb-6 flex-wrap" role="tablist" aria-label="Фильтр по категориям">
+    <nav className="flex gap-2 mb-6 flex-wrap" role="tablist" aria-label={t('knowledge.filterLabel')}>
       <button
         onClick={() => onSelectCategory('all')}
         className={`px-4 py-2 rounded-lg transition ${getButtonClass(selectedCategory === 'all')}`}
@@ -24,10 +26,10 @@ export const CategoryFilter = ({ selectedCategory, onSelectCategory }) => {
         aria-selected={selectedCategory === 'all'}
         aria-controls="materials-list"
       >
-        Все курсы
+        {t('knowledge.allCourses')}
       </button>
 
-      {COURSE_DATA.courses.map((course) => (
+      {courses.map((course) => (
         <button
           key={course.id}
           onClick={() => onSelectCategory(course.id)}
@@ -44,4 +46,16 @@ export const CategoryFilter = ({ selectedCategory, onSelectCategory }) => {
       ))}
     </nav>
   );
+};
+
+CategoryFilter.propTypes = {
+  selectedCategory: PropTypes.string.isRequired,
+  onSelectCategory: PropTypes.func.isRequired,
+  courses: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired
+    })
+  ).isRequired
 };

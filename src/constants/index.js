@@ -31,3 +31,15 @@ export const CATEGORIES = {
   CSS: 'css',
   REACT: 'react',
 };
+
+export const LANGUAGES = {
+  RU: 'ru',
+  EN: 'en',
+  KY: 'ky',
+};
+
+export const LANGUAGE_NAMES = {
+  ru: 'Русский',
+  en: 'English',
+  ky: 'Кыргызча',
+};

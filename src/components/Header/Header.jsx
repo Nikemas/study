@@ -3,12 +3,15 @@
 import PropTypes from 'prop-types';
 import { Book, MessageSquare, Database, History } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { TabButton } from '../UI/TabButton';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageSelector } from './LanguageSelector';
 import { themeClasses } from '../../utils/themeUtils';
 
 export const Header = ({ activeTab, setActiveTab }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <header
@@ -23,37 +26,38 @@ export const Header = ({ activeTab, setActiveTab }) => {
             </div>
             <div>
               <h1 className={`text-xl font-bold ${themeClasses.text(theme)}`}>
-                Образовательная платформа
+                {t('header.title')}
               </h1>
               <p className={`text-sm ${themeClasses.textMuted(theme)}`}>
-                AI-помощник по веб-разработке
+                {t('header.subtitle')}
               </p>
             </div>
           </div>
 
           {/* Navigation */}
           <nav className="flex gap-2 items-center flex-wrap">
+            <LanguageSelector />
             <ThemeToggle />
 
             <TabButton
               active={activeTab === 'chat'}
               onClick={() => setActiveTab('chat')}
               icon={<MessageSquare className="w-4 h-4" />}
-              label="Чат"
+              label={t('tabs.chat')}
             />
 
             <TabButton
               active={activeTab === 'history'}
               onClick={() => setActiveTab('history')}
               icon={<History className="w-4 h-4" />}
-              label="История"
+              label={t('tabs.history')}
             />
 
             <TabButton
               active={activeTab === 'knowledge'}
               onClick={() => setActiveTab('knowledge')}
               icon={<Database className="w-4 h-4" />}
-              label="База знаний"
+              label={t('tabs.knowledge')}
             />
           </nav>
         </div>

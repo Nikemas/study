@@ -5,17 +5,27 @@ import { AI_CONFIG } from '../config/aiConfig';
 import { createSystemPrompt } from '../config/systemPrompt';
 import { buildContextFromKnowledge } from './contextBuilder';
 
-export const sendMessageToAI = async (question, conversationHistory) => {
+// Коды ошибок для локализации
+export const API_ERROR_CODES = {
+  API_KEY_NOT_FOUND: 'errors.apiKeyNotFound',
+  INVALID_API_KEY: 'errors.invalidApiKey',
+  RATE_LIMIT: 'errors.rateLimitExceeded',
+  SERVER_UNAVAILABLE: 'errors.serverUnavailable',
+  API_ERROR: 'errors.apiError',
+  INVALID_RESPONSE: 'errors.invalidResponse'
+};
+
+export const sendMessageToAI = async (question, conversationHistory, language = 'ru') => {
   const apiKey = process.env.REACT_APP_GROQ_API_KEY;
 
   if (!apiKey) {
-    throw new Error(
-      'API ключ не найден! Создайте файл .env и добавьте: REACT_APP_GROQ_API_KEY=ваш-ключ'
-    );
+    const error = new Error(API_ERROR_CODES.API_KEY_NOT_FOUND);
+    error.code = API_ERROR_CODES.API_KEY_NOT_FOUND;
+    throw error;
   }
 
   const context = buildContextFromKnowledge(question);
-  const systemPrompt = createSystemPrompt(context);
+  const systemPrompt = createSystemPrompt(context, language);
 
   const messages = [
     { role: 'system', content: systemPrompt },
@@ -38,23 +48,30 @@ export const sendMessageToAI = async (question, conversationHistory) => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
+    await response.json().catch(() => ({}));
 
+    let errorCode;
     if (response.status === 401) {
-      throw new Error('Неверный API ключ Groq');
+      errorCode = API_ERROR_CODES.INVALID_API_KEY;
     } else if (response.status === 429) {
-      throw new Error('Превышен лимит запросов Groq');
+      errorCode = API_ERROR_CODES.RATE_LIMIT;
     } else if (response.status >= 500) {
-      throw new Error('Сервер временно недоступен. Попробуйте позже.');
+      errorCode = API_ERROR_CODES.SERVER_UNAVAILABLE;
     } else {
-      throw new Error(errorData.error?.message || 'Ошибка при обращении к Groq');
+      errorCode = API_ERROR_CODES.API_ERROR;
     }
+
+    const error = new Error(errorCode);
+    error.code = errorCode;
+    throw error;
   }
 
   const data = await response.json();
 
   if (!data.choices || !data.choices.length || !data.choices[0].message) {
-    throw new Error('Некорректный ответ от API');
+    const error = new Error(API_ERROR_CODES.INVALID_RESPONSE);
+    error.code = API_ERROR_CODES.INVALID_RESPONSE;
+    throw error;
   }
 
   return data.choices[0].message.content;

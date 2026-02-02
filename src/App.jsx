@@ -3,6 +3,7 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { Header } from './components/Header/Header';
 import { useChat } from './hooks/useChat';
 import { useTheme } from './hooks/useTheme';
@@ -24,6 +25,7 @@ const LoadingFallback = () => (
 function AppContent() {
   const [activeTab, setActiveTab] = useState('chat');
   const { theme } = useTheme();
+  const { language, courseData, t } = useLanguage();
   const {
     chatHistory,
     saveChat,
@@ -39,7 +41,7 @@ function AppContent() {
     clearHistory,
     loadMessages,
     updateMessageRating
-  } = useChat(saveChat);
+  } = useChat(saveChat, language, courseData?.initialMessage, t);
 
   const handleLoadChat = useCallback((chatId) => {
     const chatMessages = loadChat(chatId);
@@ -101,7 +103,9 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <AppContent />
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

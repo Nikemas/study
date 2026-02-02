@@ -4,10 +4,12 @@ import { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { MessageSquare, Trash2 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { themeClasses } from '../../utils/themeUtils';
 
 export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
   const { theme } = useTheme();
+  const { t, language } = useLanguage();
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = (e) => {
@@ -34,7 +36,7 @@ export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
         <button
           onClick={() => onLoad(chat.id)}
           className="flex-1 text-left"
-          aria-label={`Открыть диалог: ${chat.title}`}
+          aria-label={`${t('history.openChat')}: ${chat.title}`}
         >
           <div className="flex items-center gap-2 mb-1">
             <MessageSquare className="w-4 h-4 text-indigo-500" aria-hidden="true" />
@@ -43,8 +45,8 @@ export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
             </span>
           </div>
           <div className={`text-sm ${themeClasses.textSecondary(theme)}`}>
-            {chat.messages.length} сообщений •{' '}
-            {new Date(chat.timestamp).toLocaleDateString('ru-RU', {
+            {chat.messages.length} {t('history.messages')} •{' '}
+            {new Date(chat.timestamp).toLocaleDateString(language === 'ky' ? 'ky-KG' : language === 'en' ? 'en-US' : 'ru-RU', {
               day: 'numeric',
               month: 'short',
               year: 'numeric'
@@ -61,8 +63,8 @@ export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
               ? 'hover:bg-red-900 text-gray-400 hover:text-red-400'
               : 'hover:bg-red-50 text-gray-500 hover:text-red-600'
           }`}
-          title={showConfirm ? 'Нажмите ещё раз для удаления' : 'Удалить диалог'}
-          aria-label={showConfirm ? 'Подтвердить удаление' : 'Удалить диалог'}
+          title={showConfirm ? t('history.deleteHint') : t('history.deleteChat')}
+          aria-label={showConfirm ? t('history.confirmDelete') : t('history.deleteChat')}
         >
           <Trash2 className="w-4 h-4" aria-hidden="true" />
         </button>
