@@ -2,14 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Book, MessageSquare, Database, History, Settings, Trophy } from 'lucide-react';
+import { Book, Settings, Trophy } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { TabButton } from '../UI/TabButton';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSelector } from './LanguageSelector';
 import { ApiKeyModal } from './ApiKeyModal';
-import { themeClasses } from '../../utils/themeUtils';
 import { getOverallStats } from '../../services/progressService';
 import { getAllMaterials, getAllQuizIds } from '../../data/courseData';
 
@@ -26,106 +24,125 @@ export const Header = ({ activeTab, setActiveTab, progressKey = 0 }) => {
   }, [progressKey]);
 
   return (
-    <header
-      className={`${themeClasses.card(theme)} shadow-md border-b transition-colors`}
-    >
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        {/* Top row with language selector */}
-        <div className="flex items-center justify-end mb-3">
-          <LanguageSelector />
-        </div>
+    <>
+      {/* Glow effect background */}
+      {isDark && (
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none z-0" />
+      )}
 
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2 rounded-lg shadow-lg">
-              <Book className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className={`text-xl font-bold ${themeClasses.text(theme)}`}>
-                {t('header.title')}
-              </h1>
-              <p className={`text-sm ${themeClasses.textMuted(theme)}`}>
-                {t('header.subtitle')}
-              </p>
-            </div>
-          </div>
-
-          {/* Progress indicator */}
-          <div className={`hidden sm:flex items-center gap-3 px-4 py-2 rounded-lg ${
-            isDark ? 'bg-gray-700/50' : 'bg-gray-100'
-          }`}>
-            <Trophy size={18} className={overallStats.overallProgress === 100 ? 'text-yellow-500' : isDark ? 'text-gray-400' : 'text-gray-500'} />
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className={`text-xs ${themeClasses.textSecondary(theme)}`}>
-                  {t('progress.overall')}
-                </span>
-                <span className={`text-sm font-bold ${
-                  overallStats.overallProgress === 100
-                    ? 'text-green-500'
-                    : isDark ? 'text-indigo-400' : 'text-indigo-600'
-                }`}>
-                  {overallStats.overallProgress}%
-                </span>
+      <header
+        className={`fixed top-6 left-6 right-6 h-auto z-50 ${
+          isDark ? 'glass' : 'light-glass'
+        } rounded-2xl shadow-2xl transition-all`}
+      >
+        <div className="px-6 py-3">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            {/* Left: Logo and Navigation */}
+            <div className="flex items-center gap-4">
+              {/* Logo */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <Book className="w-4 h-4 text-white" />
+                </div>
+                <div className="hidden sm:block">
+                  <h1 className={`text-sm font-semibold tracking-wide ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {t('header.title')}
+                  </h1>
+                </div>
               </div>
-              <div className={`w-24 h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-gray-600' : 'bg-gray-200'}`}>
-                <div
-                  className={`h-full transition-all duration-500 ${
-                    overallStats.overallProgress === 100 ? 'bg-green-500' : 'bg-indigo-600'
+
+              {/* Divider */}
+              <div className={`h-4 w-px ${isDark ? 'bg-white/10' : 'bg-gray-300'}`} />
+
+              {/* Navigation Tabs */}
+              <nav className={`flex items-center ${isDark ? 'bg-white/5' : 'bg-gray-200/50'} rounded-lg p-0.5`}>
+                <button
+                  onClick={() => setActiveTab('chat')}
+                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
+                    activeTab === 'chat'
+                      ? isDark
+                        ? 'text-white bg-white/10 shadow-sm'
+                        : 'text-gray-900 bg-white shadow-sm'
+                      : isDark
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
-                  style={{ width: `${overallStats.overallProgress}%` }}
-                />
+                >
+                  {t('tabs.chat')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('history')}
+                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
+                    activeTab === 'history'
+                      ? isDark
+                        ? 'text-white bg-white/10 shadow-sm'
+                        : 'text-gray-900 bg-white shadow-sm'
+                      : isDark
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {t('tabs.history')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('knowledge')}
+                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
+                    activeTab === 'knowledge'
+                      ? isDark
+                        ? 'text-white bg-white/10 shadow-sm'
+                        : 'text-gray-900 bg-white shadow-sm'
+                      : isDark
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {t('tabs.knowledge')}
+                </button>
+              </nav>
+            </div>
+
+            {/* Right: Progress, Actions, Language */}
+            <div className="flex items-center gap-3">
+              {/* Progress indicator */}
+              <div className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full ${
+                isDark ? 'border border-white/5 bg-white/5' : 'border border-gray-300 bg-gray-100'
+              }`}>
+                <Trophy size={16} className={overallStats.overallProgress === 100 ? 'text-amber-400' : 'text-primary'} />
+                <span className={`text-xs font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {overallStats.overallProgress}% XP
+                </span>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+
+                <button
+                  onClick={() => setIsApiKeyModalOpen(true)}
+                  className={`w-8 h-8 flex items-center justify-center rounded-lg transition ${
+                    isDark
+                      ? 'hover:bg-white/5 text-gray-400 hover:text-white'
+                      : 'hover:bg-gray-200 text-gray-600 hover:text-gray-900'
+                  }`}
+                  aria-label={t('apiKey.settings')}
+                  title={t('apiKey.settings')}
+                >
+                  <Settings className="w-5 h-5" />
+                </button>
+
+                {/* Language Selector */}
+                <LanguageSelector />
               </div>
             </div>
           </div>
-
-          {/* Navigation */}
-          <nav className="flex gap-2 items-center flex-wrap">
-            <ThemeToggle />
-
-            <button
-              onClick={() => setIsApiKeyModalOpen(true)}
-              className={`p-2 rounded-lg transition ${
-                theme === 'dark'
-                  ? 'bg-gray-700 hover:bg-gray-600'
-                  : 'bg-gray-100 hover:bg-gray-200'
-              }`}
-              aria-label={t('apiKey.settings')}
-              title={t('apiKey.settings')}
-            >
-              <Settings className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
-            </button>
-
-            <TabButton
-              active={activeTab === 'chat'}
-              onClick={() => setActiveTab('chat')}
-              icon={<MessageSquare className="w-4 h-4" />}
-              label={t('tabs.chat')}
-            />
-
-            <TabButton
-              active={activeTab === 'history'}
-              onClick={() => setActiveTab('history')}
-              icon={<History className="w-4 h-4" />}
-              label={t('tabs.history')}
-            />
-
-            <TabButton
-              active={activeTab === 'knowledge'}
-              onClick={() => setActiveTab('knowledge')}
-              icon={<Database className="w-4 h-4" />}
-              label={t('tabs.knowledge')}
-            />
-          </nav>
         </div>
-      </div>
 
-      <ApiKeyModal
-        isOpen={isApiKeyModalOpen}
-        onClose={() => setIsApiKeyModalOpen(false)}
-      />
-    </header>
+        <ApiKeyModal
+          isOpen={isApiKeyModalOpen}
+          onClose={() => setIsApiKeyModalOpen(false)}
+        />
+      </header>
+    </>
   );
 };
 

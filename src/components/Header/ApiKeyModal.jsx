@@ -1,12 +1,12 @@
 // src/components/Header/ApiKeyModal.jsx
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { X, Eye, EyeOff, Key } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { getApiKey, saveApiKey } from '../../services/aiService';
-import { themeClasses } from '../../utils/themeUtils';
 
 export const ApiKeyModal = ({ isOpen, onClose }) => {
   const { theme } = useTheme();
@@ -32,39 +32,49 @@ export const ApiKeyModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Overlay */}
+  const isDark = theme === 'dark';
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50"
+        className={`absolute inset-0 ${
+          isDark ? 'bg-black/80' : 'bg-black/60'
+        } backdrop-blur-md`}
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal */}
       <div
-        className={`relative w-full max-w-md rounded-lg shadow-xl ${themeClasses.card(theme)} border p-6`}
+        className={`relative w-full max-w-md rounded-2xl shadow-2xl ${
+          isDark ? 'glass-card' : 'light-glass-card'
+        } p-6 animate-slideUp z-10`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="api-key-modal-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Key className={`w-5 h-5 ${theme === 'dark' ? 'text-indigo-400' : 'text-indigo-600'}`} />
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl ${
+              isDark ? 'bg-indigo-500/10 border border-indigo-500/20' : 'bg-indigo-100 border border-indigo-200'
+            } flex items-center justify-center`}>
+              <Key className={`w-5 h-5 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} />
+            </div>
             <h2
               id="api-key-modal-title"
-              className={`text-lg font-semibold ${themeClasses.text(theme)}`}
+              className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} font-display`}
             >
               {t('apiKey.title')}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className={`p-1 rounded-lg transition ${
-              theme === 'dark'
-                ? 'hover:bg-gray-700 text-gray-400'
-                : 'hover:bg-gray-100 text-gray-500'
+            className={`p-2 rounded-xl transition ${
+              isDark
+                ? 'hover:bg-white/5 text-gray-400 hover:text-white'
+                : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
             }`}
             aria-label={t('common.close')}
           >
@@ -73,24 +83,28 @@ export const ApiKeyModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Description */}
-        <p className={`mb-4 text-sm ${themeClasses.textMuted(theme)}`}>
+        <p className={`mb-6 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
           {t('apiKey.description')}
         </p>
 
         {/* Input */}
-        <div className="relative mb-4">
+        <div className="relative mb-6">
           <input
             type={showKey ? 'text' : 'password'}
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder={t('apiKey.placeholder')}
-            className={`w-full px-4 py-2 pr-10 rounded-lg border transition ${themeClasses.input(theme)} focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+            className={`w-full px-4 py-3 pr-12 rounded-xl border transition ${
+              isDark
+                ? 'bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-indigo-500/50'
+                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:border-indigo-500'
+            } focus:outline-none focus:ring-2 focus:ring-indigo-500/20`}
           />
           <button
             type="button"
             onClick={() => setShowKey(!showKey)}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded ${
-              theme === 'dark' ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+            className={`absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition ${
+              isDark ? 'text-gray-400 hover:text-gray-300 hover:bg-white/5' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
             }`}
             aria-label={showKey ? t('apiKey.hideKey') : t('apiKey.showKey')}
           >
@@ -99,39 +113,42 @@ export const ApiKeyModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Link to get key */}
-        <p className={`mb-4 text-sm ${themeClasses.textMuted(theme)}`}>
+        <p className={`mb-6 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
           {t('apiKey.getKeyText')}{' '}
           <a
             href="https://console.groq.com/keys"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-indigo-500 hover:text-indigo-600 underline"
+            className={`${
+              isDark ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'
+            } underline font-medium`}
           >
             console.groq.com
           </a>
         </p>
 
         {/* Buttons */}
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={handleClear}
-            className={`flex-1 px-4 py-2 rounded-lg transition ${
-              theme === 'dark'
-                ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+            className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition ${
+              isDark
+                ? 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10'
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200'
             }`}
           >
             {t('apiKey.clear')}
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition shadow-lg shadow-indigo-500/20"
           >
             {t('apiKey.save')}
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

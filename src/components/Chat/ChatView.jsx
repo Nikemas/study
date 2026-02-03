@@ -2,14 +2,11 @@
 
 import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '../../hooks/useTheme';
-import { themeClasses } from '../../utils/themeUtils';
 import { Message } from './Message';
 import { ChatInput } from './ChatInput';
 import { LoadingIndicator } from './LoadingIndicator';
 
 export const ChatView = ({ messages, loading, onSend, onRate }) => {
-  const { theme } = useTheme();
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -17,20 +14,24 @@ export const ChatView = ({ messages, loading, onSend, onRate }) => {
   }, [messages]);
 
   return (
-    <div className="max-w-5xl mx-auto h-full flex flex-col p-4">
+    <div className="h-full flex flex-col relative">
       {/* Messages Area */}
-      <div
-        className={`flex-1 overflow-y-auto mb-4 p-4 ${themeClasses.bg(theme)} rounded-lg shadow-sm`}
-      >
-        {messages.map((msg) => (
-          <Message key={msg.id} message={msg} onRate={onRate} />
-        ))}
-        {loading && <LoadingIndicator />}
-        <div ref={messagesEndRef} />
+      <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 pb-32">
+        <div className="flex flex-col gap-10 py-4">
+          {messages.map((msg) => (
+            <Message key={msg.id} message={msg} onRate={onRate} />
+          ))}
+          {loading && <LoadingIndicator />}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
-      {/* Input */}
-      <ChatInput onSend={onSend} loading={loading} />
+      {/* Fixed Input at Bottom */}
+      <div className="fixed bottom-8 left-0 right-0 px-4 flex flex-col items-center z-40 pointer-events-none">
+        <div className="w-full max-w-3xl pointer-events-auto">
+          <ChatInput onSend={onSend} loading={loading} />
+        </div>
+      </div>
     </div>
   );
 };

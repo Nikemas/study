@@ -93,13 +93,13 @@ function AppContent() {
       <div
         className={`flex flex-col h-screen ${
           theme === 'dark'
-            ? 'bg-gray-900'
+            ? 'mesh-gradient'
             : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-        } transition-colors`}
+        } transition-colors relative overflow-hidden`}
       >
         <Header activeTab={activeTab} setActiveTab={setActiveTab} progressKey={progressKey} />
 
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-hidden pt-24 pb-6 px-6">
           <Suspense fallback={<LoadingFallback />}>
             <AnimatePresence mode="wait">
               {activeTab === 'chat' && (
