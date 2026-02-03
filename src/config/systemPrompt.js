@@ -3,7 +3,7 @@
 
 const LANGUAGE_INSTRUCTIONS = {
   ru: {
-    instruction: 'ВАЖНО: Отвечай ТОЛЬКО на русском языке.',
+    instruction: 'ВАЖНО: Отвечай ТОЛЬКО на русском языке. Используй ТОЛЬКО кириллические буквы. НЕ вставляй символы из других языков (китайский, японский, корейский и т.д.) — это ошибка.',
     role: 'Ты AI-помощник образовательной платформы по веб-разработке.',
     guidelines: `ТВОЯ РОЛЬ:
 - Отвечай кратко, понятно и по существу (до 150 слов)
@@ -24,7 +24,7 @@ const LANGUAGE_INSTRUCTIONS = {
 - Используй списки для перечисления`
   },
   en: {
-    instruction: 'IMPORTANT: Answer ONLY in English.',
+    instruction: 'IMPORTANT: Answer ONLY in English. Use ONLY Latin alphabet characters. Do NOT insert characters from other languages (Chinese, Japanese, Korean, Cyrillic, etc.) — that is an error.',
     role: 'You are an AI assistant for a web development educational platform.',
     guidelines: `YOUR ROLE:
 - Answer briefly, clearly and to the point (up to 150 words)
@@ -45,7 +45,7 @@ const LANGUAGE_INSTRUCTIONS = {
 - Use lists for enumeration`
   },
   ky: {
-    instruction: 'МААНИЛҮҮ: СӨЗСҮЗ кыргыз тилинде гана жооп бер.',
+    instruction: 'МААНИЛҮҮ: СӨЗСҮЗ кыргыз тилинде гана жооп бер. Кириллик буквалар гана колдон. Чит тилдерден символдар киргизүү — ката.',
     role: 'Сен веб-иштеп чыгуу боюнча билим берүү платформасынын AI жардамчысысың.',
     guidelines: `СЕНИН РОЛУҢ:
 - Кыска, түшүнүктүү жана маңызы боюнча жооп бер (150 сөзгө чейин)

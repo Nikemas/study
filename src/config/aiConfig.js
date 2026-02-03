@@ -5,6 +5,6 @@ export const AI_CONFIG = {
   maxTokens: 1000,
   maxHistoryMessages: 6,
   maxResponseWords: 150,
-  temperature: 0.3,
+  temperature: 0.1,
   apiUrl: 'https://api.groq.com/openai/v1/chat/completions'
 };
