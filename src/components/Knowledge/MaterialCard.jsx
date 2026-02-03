@@ -4,6 +4,7 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { ArrowRight, Play } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { isMaterialComplete } from '../../services/progressService';
 
 const CATEGORY_CONFIG = {
@@ -16,6 +17,7 @@ const CATEGORY_CONFIG = {
 
 export const MaterialCard = memo(({ material, onOpen }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const isCompleted = isMaterialComplete(material.id);
   const config = CATEGORY_CONFIG[material.category] || CATEGORY_CONFIG.python;
@@ -72,7 +74,7 @@ export const MaterialCard = memo(({ material, onOpen }) => {
           } text-[10px] ${
             isDark ? 'text-gray-400' : 'text-gray-600'
           } font-medium`}>
-            Not Started
+            {t('material.notStarted')}
           </div>
         )}
       </div>
@@ -94,7 +96,7 @@ export const MaterialCard = memo(({ material, onOpen }) => {
         } text-sm font-medium ${
           isDark ? 'text-gray-300' : 'text-gray-700'
         } transition-all flex items-center justify-center gap-2`}>
-          <span>{isCompleted ? 'Повторить' : 'Начать модуль'}</span>
+          <span>{isCompleted ? t('material.repeat') : t('material.startModule')}</span>
           {isCompleted ? (
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           ) : (

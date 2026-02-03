@@ -105,5 +105,20 @@ export default {
     overall: 'Overall progress',
     markComplete: 'Mark as read',
     markIncomplete: 'Unmark'
+  },
+  material: {
+    notStarted: 'Not Started',
+    startModule: 'Start Module',
+    repeat: 'Repeat',
+    description: 'Description',
+    detailedStudy: 'Detailed Study',
+    examples: 'Examples',
+    keyPoints: 'Key Points',
+    askAI: 'Ask AI',
+    hideAI: 'Hide Assistant',
+    completed: 'Completed ✓',
+    markComplete: 'Mark as Completed',
+    aiHelper: 'AI Assistant',
+    askQuestionAbout: 'Ask questions about the topic'
   }
 };

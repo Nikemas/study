@@ -105,6 +105,21 @@ const ruUI = {
     overall: 'Общий прогресс',
     markComplete: 'Отметить как прочитанное',
     markIncomplete: 'Отменить отметку'
+  },
+  material: {
+    notStarted: 'Не начат',
+    startModule: 'Начать модуль',
+    repeat: 'Повторить',
+    description: 'Описание',
+    detailedStudy: 'Подробное изучение',
+    examples: 'Примеры',
+    keyPoints: 'Ключевые моменты',
+    askAI: 'Спросить AI',
+    hideAI: 'Скрыть помощника',
+    completed: 'Выполнено ✓',
+    markComplete: 'Отметить как выполненное',
+    aiHelper: 'AI Помощник',
+    askQuestionAbout: 'Задавайте вопросы по теме'
   }
 };
 

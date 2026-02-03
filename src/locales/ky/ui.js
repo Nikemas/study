@@ -105,5 +105,20 @@ export default {
     overall: 'Жалпы прогресс',
     markComplete: 'Окулду деп белгилөө',
     markIncomplete: 'Белгини алып салуу'
+  },
+  material: {
+    notStarted: 'Башталган жок',
+    startModule: 'Модулду баштоо',
+    repeat: 'Кайтып келүү',
+    description: 'Сүрөттөмө',
+    detailedStudy: 'Толку үйрөнүү',
+    examples: 'Мисалдар',
+    keyPoints: 'Негизги чүүктер',
+    askAI: 'AI сороloo',
+    hideAI: 'Жардамчыны жашыруу',
+    completed: 'Аяктады ✓',
+    markComplete: 'Аяктаган деп белгилөө',
+    aiHelper: 'AI Жардамчы',
+    askQuestionAbout: 'Тема боюнча суроо бериңиз'
   }
 };

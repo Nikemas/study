@@ -22,7 +22,7 @@ const CATEGORY_CONFIG = {
 
 export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
   const { theme } = useTheme();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [isCompleted, setIsCompleted] = useState(() => isMaterialComplete(material.id));
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,11 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
       setMessages([{
         id: 'welcome-msg',
         role: 'assistant',
-        content: `Привет! Я помогу тебе изучить тему **"${material.topic}"**. Задавай любые вопросы по этой теме — объясню подробно!`
+        content: language === 'en'
+          ? `Hi! I'll help you study the topic **"${material.topic}"**. Ask any questions about this topic — I'll explain in detail!`
+          : language === 'ky'
+            ? `Саlamат! Сен **"${material.topic}"** темасын үйрөнүүгө жардамчы болам. Бул тема боюнча кез келген суроо бер — түшүндүрүп берем!`
+            : `Привет! Я помогу тебе изучить тему **"${material.topic}"**. Задавай любые вопросы по этой теме — объясню подробно!`
       }]);
     }
   }, [showChat, material.topic, messages.length]);
@@ -89,7 +93,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
       setMessages(prev => [...prev, {
         id: generateId(),
         role: 'assistant',
-        content: '⚠️ Произошла ошибка при обращении к AI. Проверьте API ключ и попробуйте снова.',
+        content: `⚠️ ${t(err.code) || t('errors.apiError')}`,
         timestamp: new Date(),
         error: true
       }]);
@@ -127,7 +131,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
           {/* Completed badge in header */}
           {isCompleted && (
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600/20 text-green-400 border border-green-500/30">
-              Выполнено
+              {t('progress.completed')}
             </span>
           )}
 
@@ -150,7 +154,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
               <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
                 <div className="flex items-center gap-2 mb-3">
                   <BookOpen className={config.colorClass} size={18} />
-                  <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Описание</h3>
+                  <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.description')}</h3>
                 </div>
                 <p className={`leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                   {material.content}
@@ -160,7 +164,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
               {/* Detailed content */}
               {material.detailedContent && (
                 <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
-                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Подробное изучение</h3>
+                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.detailedStudy')}</h3>
                   <div className={`space-y-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     {material.detailedContent.split('\n\n').map((paragraph, idx) => (
                       <p key={idx} className="leading-relaxed">{paragraph}</p>
@@ -172,7 +176,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
               {/* Code Examples */}
               {material.examples?.length > 0 && (
                 <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
-                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Примеры</h3>
+                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.examples')}</h3>
                   <div className="space-y-4">
                     {material.examples.map((example, idx) => (
                       <div key={idx} className={`rounded-xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
@@ -198,7 +202,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
               {/* Key Points */}
               {material.keyPoints?.length > 0 && (
                 <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-200'}`}>
-                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Ключевые моменты</h3>
+                  <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.keyPoints')}</h3>
                   <ul className="space-y-2">
                     {material.keyPoints.map((point, idx) => (
                       <li key={idx} className={`flex items-start gap-2 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -225,7 +229,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
                   }`}
                 >
                   <MessageCircle size={18} />
-                  {showChat ? 'Скрыть помощника' : 'Спросить AI'}
+                  {showChat ? t('material.hideAI') : t('material.askAI')}
                 </button>
 
                 <button
@@ -237,7 +241,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
                   }`}
                 >
                   <CheckCircle2 size={18} />
-                  {isCompleted ? 'Выполнено ✓' : 'Отметить как выполненное'}
+                  {isCompleted ? t('material.completed') : t('material.markComplete')}
                 </button>
               </div>
             </div>
@@ -247,8 +251,8 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
           {showChat && (
             <div className={`w-1/2 border-l ${isDark ? 'border-white/10' : 'border-gray-200'} flex flex-col min-w-0`}>
               <div className={`p-4 border-b ${isDark ? 'border-white/10 bg-white/3' : 'border-gray-200 bg-white/60'}`}>
-                <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>AI Помощник</h3>
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Задавайте вопросы по теме "{material.topic}"</p>
+                <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.aiHelper')}</h3>
+                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{t('material.askQuestionAbout')} "{material.topic}"</p>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4">
