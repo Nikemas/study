@@ -1,153 +1,102 @@
 // src/components/Header/Header.jsx
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Book, Settings, Trophy } from 'lucide-react';
+import { Book, MessageSquare, Database, History, Settings } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSelector } from './LanguageSelector';
 import { ApiKeyModal } from './ApiKeyModal';
-import { getOverallStats } from '../../services/progressService';
-import { getAllMaterials, getAllQuizIds } from '../../data/courseData';
+import { LevelBadge } from './LevelBadge';
+import { themeClasses } from '../../utils/themeUtils';
+import { TabButton } from '../UI/TabButton';
 
-export const Header = ({ activeTab, setActiveTab, progressKey = 0 }) => {
+
+export const Header = ({ activeTab, setActiveTab }) => {
   const { theme } = useTheme();
-  const { t } = useLanguage();
+  useLanguage(); // LanguageSelector might need it.
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
-  const isDark = theme === 'dark';
-
-  const overallStats = useMemo(() => {
-    const allMaterials = getAllMaterials();
-    const allQuizIds = getAllQuizIds();
-    return getOverallStats(allMaterials, allQuizIds);
-  }, [progressKey]);
 
   return (
     <>
-      {/* Glow effect background */}
-      {isDark && (
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none z-0" />
-      )}
-
       <header
-        className={`fixed top-6 left-6 right-6 h-auto z-50 ${
-          isDark ? 'glass' : 'light-glass'
-        } rounded-2xl shadow-2xl transition-all`}
+        className={`sticky top-0 z-50 border-b transition-colors duration-300 backdrop-blur-md ${theme === 'dark'
+            ? 'bg-gray-900/80 border-gray-800'
+            : 'bg-white/80 border-gray-200'
+          }`}
       >
-        <div className="px-6 py-3">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            {/* Left: Logo and Navigation */}
-            <div className="flex items-center gap-4">
-              {/* Logo */}
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                  <Book className="w-4 h-4 text-white" />
-                </div>
-                <div className="hidden sm:block">
-                  <h1 className={`text-sm font-semibold tracking-wide ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {t('header.title')}
-                  </h1>
-                </div>
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-4">
+            {/* Logo */}
+            <div className="flex items-center gap-3 min-w-fit">
+              <div className="bg-primary p-2 rounded-lg shadow-lg shadow-primary/20">
+                <Book className="w-6 h-6 text-white" />
               </div>
+              <div className="hidden sm:block">
+                <h1 className={`text-lg font-bold leading-tight ${themeClasses.text(theme)}`}>
+                  AI Platform
+                </h1>
+                <p className={`text-sm ${themeClasses.textMuted(theme)}`}>
+                  AI-помощник по веб-разработке
+                </p>
+              </div>
+            </div>
 
-              {/* Divider */}
-              <div className={`h-4 w-px ${isDark ? 'bg-white/10' : 'bg-gray-300'}`} />
-
-              {/* Navigation Tabs */}
-              <nav className={`flex items-center ${isDark ? 'bg-white/5' : 'bg-gray-200/50'} rounded-lg p-0.5`}>
-                <button
+            {/* Navigation */}
+            <nav className="flex-1 flex justify-center overflow-x-auto no-scrollbar mx-2">
+              <div className="flex gap-1 p-1 bg-gray-100/50 dark:bg-gray-800/50 rounded-xl">
+                <TabButton
+                  active={activeTab === 'chat'}
                   onClick={() => setActiveTab('chat')}
-                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
-                    activeTab === 'chat'
-                      ? isDark
-                        ? 'text-white bg-white/10 shadow-sm'
-                        : 'text-gray-900 bg-white shadow-sm'
-                      : isDark
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {t('tabs.chat')}
-                </button>
-                <button
+                  icon={<MessageSquare className="w-4 h-4" />}
+                  label="Чат"
+                />
+
+                <TabButton
+                  active={activeTab === 'history'}
                   onClick={() => setActiveTab('history')}
-                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
-                    activeTab === 'history'
-                      ? isDark
-                        ? 'text-white bg-white/10 shadow-sm'
-                        : 'text-gray-900 bg-white shadow-sm'
-                      : isDark
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {t('tabs.history')}
-                </button>
-                <button
+                  icon={<History className="w-4 h-4" />}
+                  label="История"
+                />
+
+                <TabButton
+                  active={activeTab === 'knowledge'}
                   onClick={() => setActiveTab('knowledge')}
-                  className={`px-3 py-1.5 text-xs font-medium transition-all rounded ${
-                    activeTab === 'knowledge'
-                      ? isDark
-                        ? 'text-white bg-white/10 shadow-sm'
-                        : 'text-gray-900 bg-white shadow-sm'
-                      : isDark
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {t('tabs.knowledge')}
-                </button>
-              </nav>
-            </div>
-
-            {/* Right: Progress, Actions, Language */}
-            <div className="flex items-center gap-3">
-              {/* Progress indicator */}
-              <div className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full ${
-                isDark ? 'border border-white/5 bg-white/5' : 'border border-gray-300 bg-gray-100'
-              }`}>
-                <Trophy size={16} className={overallStats.overallProgress === 100 ? 'text-amber-400' : 'text-primary'} />
-                <span className={`text-xs font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {overallStats.overallProgress}% XP
-                </span>
+                  icon={<Database className="w-4 h-4" />}
+                  label="База знаний"
+                />
               </div>
+            </nav>
 
-              {/* Actions */}
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
-
-                <button
-                  onClick={() => setIsApiKeyModalOpen(true)}
-                  className={`w-8 h-8 flex items-center justify-center rounded-lg transition ${
-                    isDark
-                      ? 'hover:bg-white/5 text-gray-400 hover:text-white'
-                      : 'hover:bg-gray-200 text-gray-600 hover:text-gray-900'
+            {/* Actions */}
+            <nav className="flex gap-2 items-center min-w-fit">
+              <LevelBadge />
+              <LanguageSelector />
+              <ThemeToggle />
+              <button
+                onClick={() => setIsApiKeyModalOpen(true)}
+                className={`p-2 rounded-lg transition ${theme === 'dark'
+                    ? 'hover:bg-gray-800 text-gray-400 hover:text-white'
+                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
                   }`}
-                  aria-label={t('apiKey.settings')}
-                  title={t('apiKey.settings')}
-                >
-                  <Settings className="w-5 h-5" />
-                </button>
-
-                {/* Language Selector */}
-                <LanguageSelector />
-              </div>
-            </div>
+                aria-label="Настройки"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
+            </nav>
           </div>
         </div>
-
-        <ApiKeyModal
-          isOpen={isApiKeyModalOpen}
-          onClose={() => setIsApiKeyModalOpen(false)}
-        />
       </header>
+      <ApiKeyModal
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+      />
     </>
   );
 };
 
 Header.propTypes = {
   activeTab: PropTypes.oneOf(['chat', 'history', 'knowledge']).isRequired,
-  setActiveTab: PropTypes.func.isRequired,
-  progressKey: PropTypes.number
+  setActiveTab: PropTypes.func.isRequired
 };

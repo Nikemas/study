@@ -37,7 +37,6 @@ export const LANGUAGES = {
   EN: 'en',
   KY: 'ky',
 };
-
 export const LANGUAGE_NAMES = {
   ru: 'Русский',
   en: 'English',

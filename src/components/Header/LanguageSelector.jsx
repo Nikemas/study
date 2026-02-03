@@ -14,7 +14,7 @@ export const LanguageSelector = () => {
 
   const languages = [
     { code: 'ru', name: LANGUAGE_NAMES.ru, flag: '🇷🇺' },
-    { code: 'en', name: LANGUAGE_NAMES.en, flag: 'en' },
+    { code: 'en', name: LANGUAGE_NAMES.en, flag: '🇬🇧' },
     { code: 'ky', name: LANGUAGE_NAMES.ky, flag: '🇰🇬' }
   ];
 
@@ -40,10 +40,9 @@ export const LanguageSelector = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-8 h-8 flex items-center justify-center rounded-lg transition ${
-          theme === 'dark'
-            ? 'hover:bg-white/5 text-gray-400 hover:text-white'
-            : 'hover:bg-gray-200 text-gray-600 hover:text-gray-900'
+        className={`w-8 h-8 flex items-center justify-center rounded-lg transition ${theme === 'dark'
+          ? 'hover:bg-white/5 text-gray-400 hover:text-white'
+          : 'hover:bg-gray-200 text-gray-600 hover:text-gray-900'
         }`}
         aria-label={t('language.select')}
         aria-expanded={isOpen}
@@ -55,10 +54,9 @@ export const LanguageSelector = () => {
 
       {isOpen && (
         <div
-          className={`absolute right-0 mt-2 py-1 w-36 rounded-xl shadow-xl border z-50 ${
-            theme === 'dark'
-              ? 'glass border-white/10'
-              : 'light-glass border-gray-200'
+          className={`absolute right-0 mt-2 py-1 w-36 rounded-xl shadow-xl border z-50 ${theme === 'dark'
+            ? 'glass border-white/10'
+            : 'light-glass border-gray-200'
           }`}
           role="listbox"
           aria-label={t('language.select')}
@@ -67,12 +65,11 @@ export const LanguageSelector = () => {
             <button
               key={lang.code}
               onClick={() => handleSelect(lang.code)}
-              className={`w-full px-3 py-2 text-left flex items-center gap-2 transition rounded-lg mx-1 ${
-                language === lang.code
-                  ? theme === 'dark'
-                    ? 'bg-primary/20 text-white'
-                    : 'bg-indigo-100 text-indigo-700'
-                  : theme === 'dark'
+              className={`w-full px-3 py-2 text-left flex items-center gap-2 transition rounded-lg mx-1 ${language === lang.code
+                ? theme === 'dark'
+                  ? 'bg-primary/20 text-primary'
+                  : 'bg-primary/10 text-primary'
+                : theme === 'dark'
                   ? 'hover:bg-white/5 text-gray-300'
                   : 'hover:bg-gray-100 text-gray-700'
               }`}

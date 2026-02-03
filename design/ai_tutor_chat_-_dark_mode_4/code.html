@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Tutor - Quiz &amp; Material</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#818cf8", // Soft Indigo
+                        secondary: "#a5b4fc", // Lighter Indigo
+                        background: "#050505", // Deepest Black
+                        surface: "#121212", // Very dark grey
+                        "glass-border": "rgba(255, 255, 255, 0.08)",
+                        "glass-surface": "rgba(20, 20, 20, 0.6)",
+                    },
+                    fontFamily: {
+                        display: ["Inter Tight", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(129, 140, 248, 0.15)',
+                        'glow-sm': '0 0 10px rgba(129, 140, 248, 0.1)',
+                        'glow-lg': '0 0 40px rgba(79, 70, 229, 0.2)',
+                    }
+                },
+            },
+        };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@500;600;700&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-background text-gray-200 antialiased selection:bg-primary/30 selection:text-white;
+        }
+        h1, h2, h3, h4, h5, h6, .display-font {
+            font-family: 'Inter Tight', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+        }
+        .glass {
+            @apply bg-glass-surface backdrop-blur-xl border border-glass-border;
+        }
+        .glass-card {
+             background: rgba(20, 20, 20, 0.7);
+             backdrop-filter: blur(24px);
+             border: 1px solid rgba(255, 255, 255, 0.08);
+             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .mesh-gradient {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(49, 46, 129, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(17, 24, 39, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(55, 48, 163, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(0, 0, 0, 0.5) 0px, transparent 50%);
+        }
+        pre {
+            @apply bg-[#0d1117] border border-white/5 rounded-lg !important;
+        }
+        .prose p {
+            @apply text-gray-300 leading-relaxed mb-4;
+        }
+        .prose h2 {
+            @apply text-white font-semibold text-xl mt-8 mb-4;
+        }
+        .prose strong {
+            @apply text-white font-semibold;
+        }
+        .quiz-option {
+            @apply w-full text-left p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] transition-all duration-200 flex items-center gap-3 text-sm text-gray-300;
+        }
+        .quiz-option.selected {
+            @apply border-primary/50 bg-primary/10 text-white shadow-glow-sm;
+        }
+        .quiz-option.selected .radio-circle {
+            @apply border-primary bg-primary;
+        }
+        .radio-circle {
+            @apply w-4 h-4 rounded-full border border-gray-600 flex items-center justify-center transition-colors;
+        }
+        .radio-circle::after {
+            content: '';
+            @apply w-1.5 h-1.5 rounded-full bg-white opacity-0 transition-opacity;
+        }
+        .quiz-option.selected .radio-circle::after {
+            @apply opacity-100;
+        }
+    </style>
+</head>
+<body class="mesh-gradient min-h-screen flex flex-col overflow-hidden">
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+<div class="fixed bottom-0 right-0 w-[600px] h-[600px] bg-violet-900/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+<header class="fixed top-0 left-0 right-0 h-16 border-b border-white/5 bg-black/20 backdrop-blur-md flex items-center justify-between px-6 z-50">
+<div class="flex items-center gap-4">
+<a class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors text-gray-400 hover:text-white" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</a>
+<div>
+<div class="text-[10px] uppercase tracking-wider text-primary font-semibold mb-0.5">Module 3.2</div>
+<h1 class="text-sm font-semibold text-white tracking-wide">CSS Flexbox Architecture</h1>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-primary">timer</span>
+<span class="text-xs font-medium text-gray-300">12 mins left</span>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<span class="block text-xs text-white font-medium">Alex M.</span>
+<span class="block text-[10px] text-gray-500">Pro Member</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 border border-white/20 shadow-glow-sm"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-7xl mx-auto pt-16 h-screen flex">
+<div class="w-full lg:w-3/5 h-full overflow-y-auto p-8 lg:p-12 pb-32 no-scrollbar border-r border-white/5">
+<div class="max-w-2xl mx-auto">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-6">
+<span class="material-symbols-outlined text-[14px]">school</span>
+                Learning Material
+            </div>
+<h1 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Understanding Alignment</h1>
+<div class="prose prose-invert max-w-none">
+<p>
+                    When working with Flexbox, one of the most common points of confusion is the difference between <code class="text-indigo-300 bg-white/5 px-1.5 py-0.5 rounded text-sm">justify-content</code> and <code class="text-indigo-300 bg-white/5 px-1.5 py-0.5 rounded text-sm">align-items</code>. These two properties control how items are distributed within a flex container.
+                </p>
+<h2>The Main Axis vs. Cross Axis</h2>
+<p>
+                    Flexbox operates on two axes. The <strong>Main Axis</strong> is defined by the <code class="text-orange-300">flex-direction</code> property (row by default). The <strong>Cross Axis</strong> runs perpendicular to it.
+                </p>
+<ul class="list-disc pl-5 space-y-2 text-gray-400 mb-6">
+<li><strong class="text-gray-200">justify-content</strong> aligns items along the Main Axis.</li>
+<li><strong class="text-gray-200">align-items</strong> aligns items along the Cross Axis.</li>
+</ul>
+<div class="relative group/code rounded-xl overflow-hidden border border-white/10 bg-[#0d1117] shadow-2xl my-8">
+<div class="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50"></div>
+</div>
+<span class="text-xs text-gray-500 font-mono">styles.css</span>
+</div>
+<pre class="p-5 overflow-x-auto text-sm !bg-transparent !border-0 !m-0 font-mono leading-relaxed"><code class="language-css"><span class="text-violet-400">.flex-container</span> {
+  <span class="text-sky-300">display</span>: flex;
+  <span class="text-sky-300">height</span>: 400px;
+  <span class="text-gray-500"></span>
+  <span class="text-sky-300">justify-content</span>: center;
+  <span class="text-gray-500"></span>
+  <span class="text-sky-300">align-items</span>: center;
+}</code></pre>
+</div>
+<p>
+                    In the example above, because the default direction is <code>row</code>, <code>justify-content: center</code> moves the items to the middle of the horizontal line, while <code>align-items: center</code> moves them to the middle of the vertical space.
+                </p>
+</div>
+<div class="mt-12 pt-8 border-t border-white/5 flex justify-between items-center">
+<button class="text-gray-500 hover:text-white transition-colors text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    Previous Lesson
+                </button>
+<button class="text-white hover:text-indigo-300 transition-colors text-sm flex items-center gap-2">
+                    Next: Flex Wrap
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="hidden lg:flex lg:w-2/5 h-full items-center justify-center p-8 relative">
+<div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+<div class="absolute w-64 h-64 bg-indigo-600/20 rounded-full blur-3xl -top-10 -right-10 pointer-events-none"></div>
+<div class="glass-card w-full max-w-md rounded-2xl p-1 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-50"></div>
+<div class="bg-black/40 rounded-xl p-6 md:p-8">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-lg font-semibold text-white mb-1">Knowledge Check</h3>
+<p class="text-xs text-gray-400">Question 3 of 5</p>
+</div>
+<div class="relative w-10 h-10">
+<svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+<path class="text-white/10" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-indigo-500 drop-shadow-[0_0_4px_rgba(99,102,241,0.5)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="60, 100" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-[10px] font-bold text-indigo-400">60%</span>
+</div>
+</div>
+</div>
+<div class="mb-8">
+<p class="text-base md:text-lg font-medium text-gray-100 leading-snug">
+                        Which CSS property allows flex items to wrap onto multiple lines if they run out of space?
+                    </p>
+</div>
+<div class="space-y-3 mb-8">
+<button class="quiz-option group/opt">
+<div class="radio-circle group-hover/opt:border-gray-400"></div>
+<span class="font-mono text-xs">flex-direction: column</span>
+</button>
+<button class="quiz-option selected ring-1 ring-indigo-500/50">
+<div class="radio-circle"></div>
+<span class="font-mono text-xs">flex-wrap: wrap</span>
+</button>
+<button class="quiz-option group/opt">
+<div class="radio-circle group-hover/opt:border-gray-400"></div>
+<span class="font-mono text-xs">align-content: space-between</span>
+</button>
+<button class="quiz-option group/opt">
+<div class="radio-circle group-hover/opt:border-gray-400"></div>
+<span class="font-mono text-xs">justify-content: space-around</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-2">
+<button class="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lightbulb</span>
+                        Need a hint?
+                    </button>
+<button class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-indigo-500/25 border border-white/10 transition-all transform active:scale-95">
+                        Check Answer
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

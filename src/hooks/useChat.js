@@ -6,6 +6,7 @@ import { sendMessageToAI } from '../services/aiService';
 import { AI_CONFIG } from '../config/aiConfig';
 import { generateId } from '../utils/generateId';
 import { ROLES } from '../constants';
+import { useGamification } from '../contexts/GamificationContext';
 
 const createInitialMessage = (content) => ({
   role: ROLES.ASSISTANT,
@@ -22,6 +23,7 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
 
   const [messages, setMessages] = useState([initialMessage]);
   const [loading, setLoading] = useState(false);
+  const { addXP } = useGamification();
 
   // Update initial message when language changes
   useEffect(() => {
@@ -66,6 +68,9 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
 
       const finalMessages = [...newMessages, aiResponse];
       setMessages(finalMessages);
+
+      // Начисляем XP за отправку сообщения
+      addXP('MESSAGE');
 
       if (onSaveChat) {
         onSaveChat(finalMessages);

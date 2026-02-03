@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { ToastProvider } from './contexts/ToastContext';
+import { GamificationProvider } from './contexts/GamificationContext';
 import { Header } from './components/Header/Header';
+import { ToastContainer } from './components/UI/ToastContainer';
+import { AchievementPopup } from './components/Gamification/AchievementPopup';
 import { useChat } from './hooks/useChat';
 import { useTheme } from './hooks/useTheme';
 import { useChatHistory } from './hooks/useChatHistory';
@@ -36,7 +40,8 @@ const LoadingFallback = () => (
   </div>
 );
 
-function AppContent() {
+// Внутренний компонент приложения (использует все контексты)
+function AppContent({ pendingAchievement, onAchievementClose }) {
   const [activeTab, setActiveTab] = useState('chat');
   const [progressKey, setProgressKey] = useState(0);
   const [currentCategory, setCurrentCategory] = useState('all');
@@ -159,7 +164,40 @@ function AppContent() {
           </Suspense>
         </main>
       </div>
+
+      {/* Toast уведомления */}
+      <ToastContainer />
+
+      {/* Popup достижений */}
+      {pendingAchievement && (
+        <AchievementPopup
+          achievement={pendingAchievement}
+          onClose={onAchievementClose}
+        />
+      )}
     </div>
+  );
+}
+
+// Обертка с GamificationProvider для управления состоянием достижений
+function AppWithGamification() {
+  const [pendingAchievement, setPendingAchievement] = useState(null);
+
+  const handleAchievementUnlock = useCallback((achievement) => {
+    setPendingAchievement(achievement);
+  }, []);
+
+  const handleAchievementClose = useCallback(() => {
+    setPendingAchievement(null);
+  }, []);
+
+  return (
+    <GamificationProvider onAchievementUnlock={handleAchievementUnlock}>
+      <AppContent
+        pendingAchievement={pendingAchievement}
+        onAchievementClose={handleAchievementClose}
+      />
+    </GamificationProvider>
   );
 }
 
@@ -168,7 +206,9 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <LanguageProvider>
-          <AppContent />
+          <ToastProvider>
+            <AppWithGamification />
+          </ToastProvider>
         </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
