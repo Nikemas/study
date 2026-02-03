@@ -3,7 +3,12 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { ToastProvider } from './contexts/ToastContext';
+import { GamificationProvider } from './contexts/GamificationContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import { Header } from './components/Header/Header';
+import { ToastContainer } from './components/UI/ToastContainer';
+import { AchievementPopup } from './components/Gamification/AchievementPopup';
 import { useChat } from './hooks/useChat';
 import { useTheme } from './hooks/useTheme';
 import { useChatHistory } from './hooks/useChatHistory';
@@ -21,7 +26,8 @@ const LoadingFallback = () => (
   </div>
 );
 
-function AppContent() {
+// Внутренний компонент приложения (использует все контексты)
+function AppContent({ pendingAchievement, onAchievementClose }) {
   const [activeTab, setActiveTab] = useState('chat');
   const { theme } = useTheme();
   const {
@@ -93,7 +99,40 @@ function AppContent() {
           </Suspense>
         </main>
       </div>
+
+      {/* Toast уведомления */}
+      <ToastContainer />
+
+      {/* Popup достижений */}
+      {pendingAchievement && (
+        <AchievementPopup
+          achievement={pendingAchievement}
+          onClose={onAchievementClose}
+        />
+      )}
     </div>
+  );
+}
+
+// Обертка с GamificationProvider для управления состоянием достижений
+function AppWithGamification() {
+  const [pendingAchievement, setPendingAchievement] = useState(null);
+
+  const handleAchievementUnlock = useCallback((achievement) => {
+    setPendingAchievement(achievement);
+  }, []);
+
+  const handleAchievementClose = useCallback(() => {
+    setPendingAchievement(null);
+  }, []);
+
+  return (
+    <GamificationProvider onAchievementUnlock={handleAchievementUnlock}>
+      <AppContent
+        pendingAchievement={pendingAchievement}
+        onAchievementClose={handleAchievementClose}
+      />
+    </GamificationProvider>
   );
 }
 
@@ -101,7 +140,11 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <AppContent />
+        <LanguageProvider>
+          <ToastProvider>
+            <AppWithGamification />
+          </ToastProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

@@ -24,6 +24,9 @@ export const ChatInput = ({ onSend, onClear, loading }) => {
       e.preventDefault();
       handleSend();
     }
+    if (e.key === 'Escape') {
+      setInput('');
+    }
   };
 
   return (

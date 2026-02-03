@@ -7,10 +7,12 @@ import { AI_CONFIG } from '../config/aiConfig';
 import { INITIAL_MESSAGE } from '../data/courseData';
 import { generateId } from '../utils/generateId';
 import { ROLES } from '../constants';
+import { useGamification } from '../contexts/GamificationContext';
 
 export const useChat = (onSaveChat) => {
   const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [loading, setLoading] = useState(false);
+  const { addXP } = useGamification();
 
   const sendMessage = async (userQuestion) => {
     if (!userQuestion.trim() || loading) return;
@@ -45,6 +47,9 @@ export const useChat = (onSaveChat) => {
 
       const finalMessages = [...newMessages, aiResponse];
       setMessages(finalMessages);
+
+      // Начисляем XP за отправку сообщения
+      addXP('MESSAGE');
 
       if (onSaveChat) {
         onSaveChat(finalMessages);

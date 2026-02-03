@@ -25,7 +25,6 @@ export const Message = memo(({ message, onRate }) => {
   return (
     <article
       className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 animate-slideIn`}
-      role="article"
       aria-label={isUser ? 'Ваше сообщение' : 'Ответ ассистента'}
     >
       <div className={`max-w-[85%] rounded-lg p-4 shadow-sm ${messageClasses}`}>

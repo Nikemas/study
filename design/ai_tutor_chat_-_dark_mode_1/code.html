@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Tutor Chat - Modern Dark</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#818cf8", // Soft Indigo
+                        secondary: "#a5b4fc", // Lighter Indigo
+                        background: "#050505", // Deepest Black
+                        surface: "#121212", // Very dark grey
+                        "glass-border": "rgba(255, 255, 255, 0.08)",
+                        "glass-surface": "rgba(20, 20, 20, 0.6)",
+                    },
+                    fontFamily: {
+                        display: ["Inter Tight", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        mono: ["Fira Code", "monospace"],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(129, 140, 248, 0.15)',
+                        'glow-sm': '0 0 10px rgba(129, 140, 248, 0.1)',
+                    }
+                },
+            },
+        };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@500;600;700&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-background text-gray-200 antialiased selection:bg-primary/30 selection:text-white;
+        }
+        h1, h2, h3, h4, h5, h6, .display-font {
+            font-family: 'Inter Tight', sans-serif;
+        }::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+        }.glass {
+            @apply bg-glass-surface backdrop-blur-xl border border-glass-border;
+        }
+        .glass-heavy {
+            @apply bg-black/40 backdrop-blur-2xl border border-white/5;
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }.mesh-gradient {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(49, 46, 129, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(17, 24, 39, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(55, 48, 163, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(0, 0, 0, 0.5) 0px, transparent 50%);
+        }pre {
+            @apply bg-[#0d1117] border border-white/5 rounded-lg !important;
+        }.prose p {
+            @apply text-gray-300 leading-7;
+        }
+        .prose strong {
+            @apply text-white font-semibold;
+        }.progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="mesh-gradient min-h-screen flex flex-col overflow-hidden">
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+<header class="fixed top-6 left-6 right-6 h-14 glass rounded-2xl flex items-center justify-between px-6 z-50 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-sm font-semibold tracking-wide text-white">AI Tutor</h1>
+</div>
+<div class="h-4 w-px bg-white/10 mx-1"></div>
+<nav class="flex items-center bg-white/5 rounded-lg p-0.5">
+<button class="px-3 py-1 text-xs font-medium text-white bg-white/10 rounded shadow-sm">Chat</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-400 hover:text-white transition-colors">History</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-400 hover:text-white transition-colors">Knowledge</button>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="relative w-8 h-8">
+<svg class="w-8 h-8" viewBox="0 0 32 32">
+<circle class="text-white/10 stroke-current" cx="16" cy="16" fill="none" r="14" stroke-width="2"></circle>
+<circle class="text-primary stroke-current progress-ring__circle" cx="16" cy="16" fill="none" r="14" stroke-dasharray="88" stroke-dashoffset="84" stroke-linecap="round" stroke-width="2"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-gray-400 group-hover:text-primary transition-colors">4%</div>
+</div>
+<div class="hidden lg:block text-xs text-gray-400">
+<span class="block text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Progress</span>
+<span class="text-gray-300">Intro to Web</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">language</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings_applications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 border border-white/10"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center w-full max-w-4xl mx-auto px-6 pt-28 pb-32 overflow-hidden z-10 relative">
+<div class="flex-1 w-full flex flex-col gap-10 overflow-y-auto no-scrollbar">
+<div class="flex gap-4 group">
+<div class="flex-shrink-0 mt-1">
+<div class="w-8 h-8 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-primary shadow-glow-sm">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 max-w-2xl">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-sm font-semibold text-white">AI Assistant</span>
+<span class="text-[10px] text-gray-500">Just now</span>
+</div>
+<div class="prose prose-invert max-w-none text-sm leading-relaxed">
+<p>Hello! I'm your AI learning companion. I'm ready to help you master <strong class="text-indigo-400">Python</strong>, <strong class="text-indigo-400">JavaScript</strong>, <strong class="text-indigo-400">HTML/CSS</strong>, and <strong class="text-indigo-400">React</strong>.</p>
+<p class="mt-2 text-gray-400">Ask me anything about code structure, debugging, or best practices.</p>
+</div>
+<div class="flex gap-3 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<button class="text-gray-500 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">content_copy</span></button>
+<button class="text-gray-500 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">thumb_up</span></button>
+<button class="text-gray-500 hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">thumb_down</span></button>
+</div>
+</div>
+</div>
+<div class="flex flex-row-reverse gap-4 group">
+<div class="flex-shrink-0 mt-1">
+<div class="w-8 h-8 rounded-full bg-white/10 border border-white/5 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2 max-w-2xl">
+<div class="glass border-primary/20 bg-primary/10 rounded-2xl rounded-tr-sm px-5 py-3 shadow-glow-sm">
+<p class="text-sm text-white font-medium">How do I center a div using CSS Flexbox?</p>
+</div>
+<span class="text-[10px] text-gray-600 mr-1">00:56</span>
+</div>
+</div>
+<div class="flex gap-4 group">
+<div class="flex-shrink-0 mt-1">
+<div class="w-8 h-8 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-primary shadow-glow-sm">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 max-w-3xl w-full">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-sm font-semibold text-white">AI Assistant</span>
+<span class="text-[10px] text-gray-500">Thinking...</span>
+</div>
+<div class="prose prose-invert max-w-none text-sm text-gray-300">
+<p>To center a <code>div</code> using Flexbox, you need to apply three properties to the parent container:</p>
+<ul class="list-disc pl-4 space-y-1 text-gray-400 mt-2 mb-4 marker:text-indigo-500">
+<li><code class="text-indigo-300 bg-indigo-500/10 px-1 rounded">display: flex;</code></li>
+<li><code class="text-indigo-300 bg-indigo-500/10 px-1 rounded">justify-content: center;</code> (horizontal)</li>
+<li><code class="text-indigo-300 bg-indigo-500/10 px-1 rounded">align-items: center;</code> (vertical)</li>
+</ul>
+<div class="relative group/code mt-4 rounded-lg overflow-hidden border border-white/10 bg-[#0d1117] shadow-lg">
+<div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+<span class="text-xs text-gray-400 font-mono">style.css</span>
+<button class="text-xs text-gray-500 hover:text-white flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+                                    Copy
+                                </button>
+</div>
+<pre class="p-4 overflow-x-auto text-xs md:text-sm !bg-transparent !border-0 !m-0"><code class="language-css"><span class="text-violet-400">.container</span> {
+  <span class="text-sky-300">display</span>: flex;
+  <span class="text-sky-300">justify-content</span>: center;
+  <span class="text-sky-300">align-items</span>: center;
+  <span class="text-sky-300">height</span>: 100vh; <span class="text-gray-500"></span>
+}</code></pre>
+</div>
+</div>
+<div class="flex gap-3 mt-2">
+<button class="p-1.5 rounded-md hover:bg-white/5 text-gray-500 hover:text-white transition-colors"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
+<button class="p-1.5 rounded-md hover:bg-white/5 text-gray-500 hover:text-white transition-colors"><span class="material-symbols-outlined text-[18px]">thumb_up</span></button>
+<div class="flex-grow"></div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs text-gray-400 hover:text-white transition-colors border border-white/5">
+<span class="material-symbols-outlined text-[14px]">cached</span> Regenerate
+                        </button>
+</div>
+</div>
+</div>
+<div class="flex gap-4 group animate-pulse">
+<div class="flex-shrink-0 mt-1">
+<div class="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 max-w-2xl">
+<div class="glass border-red-500/20 bg-red-900/10 rounded-2xl rounded-tl-sm px-5 py-4 shadow-none">
+<p class="text-sm font-semibold text-red-400 mb-1">API Key Missing</p>
+<p class="text-sm text-gray-300">Please configure your Groq API key in settings to continue the conversation.</p>
+<button class="mt-3 text-xs font-medium text-white bg-red-500/20 hover:bg-red-500/30 px-3 py-1.5 rounded border border-red-500/20 transition-colors">
+                            Open Settings
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-8 left-0 right-0 px-4 flex flex-col items-center z-50 pointer-events-none">
+<div class="w-full max-w-3xl pointer-events-auto">
+<div class="flex justify-center gap-2 mb-4 opacity-0 hover:opacity-100 transition-opacity duration-500">
+<button class="px-3 py-1.5 rounded-full glass hover:bg-white/10 text-xs text-gray-400 hover:text-white border border-white/5 transition-all cursor-pointer">
+                    Explain async/await
+                </button>
+<button class="px-3 py-1.5 rounded-full glass hover:bg-white/10 text-xs text-gray-400 hover:text-white border border-white/5 transition-all cursor-pointer">
+                    React Hooks Basics
+                </button>
+</div>
+<div class="relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-40 blur transition duration-500"></div>
+<div class="relative flex items-center glass-input rounded-2xl p-2 transition-all duration-300">
+<button class="p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+</button>
+<input class="w-full bg-transparent border-none text-white placeholder-gray-500 focus:ring-0 text-sm py-3 px-2 font-light" placeholder="Ask anything about web development..." type="text"/>
+<div class="flex items-center gap-1 pr-1">
+<button class="p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5" title="Voice Input">
+<span class="material-symbols-outlined text-[20px] filled">mic</span>
+</button>
+<button class="p-2 bg-white text-black rounded-xl hover:bg-gray-200 transition-colors shadow-lg shadow-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+<p class="text-center text-[10px] text-gray-600 mt-3 font-medium tracking-wide">AI can make mistakes. Consider checking important information.</p>
+</div>
+</div>
+
+</body></html>
