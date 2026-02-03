@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { Book, ClipboardCheck, Trophy } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { themeClasses } from '../../utils/themeUtils';
 import { CategoryFilter } from './CategoryFilter';
 import { MaterialCard } from './MaterialCard';
+import { MaterialDetailView } from './MaterialDetailView';
 import { Quiz } from './Quiz';
 import { getQuizByCategory } from '../../data/courseData';
 import { getCategoryStats, getQuizResult } from '../../services/progressService';
@@ -18,6 +18,7 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showQuiz, setShowQuiz] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   const materials = useMemo(() => {
     if (!courseData?.materials) return [];
@@ -70,118 +71,154 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
   if (!courseData) return null;
 
   return (
-    <div className="max-w-5xl mx-auto h-full overflow-y-auto p-4">
-      <section className={`${themeClasses.bg(theme)} rounded-lg shadow-sm p-6`}>
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <Book
-              className={`w-6 h-6 ${
-                theme === 'dark' ? 'text-indigo-400' : 'text-indigo-600'
-              }`}
-              aria-hidden="true"
-            />
-            <h2 className={`text-2xl font-bold ${themeClasses.text(theme)}`}>
-              {courseData.title}
-            </h2>
+    <div className="flex h-full gap-6">
+      {/* Sidebar - Desktop only */}
+      <aside className={`hidden lg:flex flex-col w-64 ${
+        isDark ? 'glass' : 'light-glass'
+      } rounded-2xl p-4 gap-6`}>
+        {/* Library Section */}
+        <div className="flex flex-col gap-1">
+          <div className={`px-3 py-2 text-xs font-bold ${
+            isDark ? 'text-gray-500' : 'text-gray-600'
+          } uppercase tracking-wider`}>
+            {t('knowledge.library') || 'Library'}
           </div>
-          <p className={themeClasses.textSecondary(theme)}>
-            {t('knowledge.subtitle')}
-          </p>
+          <CategoryFilter
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategoryChange}
+            courses={courseData.courses}
+          />
         </div>
+      </aside>
 
-        {/* Category Filter */}
-        <CategoryFilter
-          selectedCategory={selectedCategory}
-          onSelectCategory={handleCategoryChange}
-          courses={courseData.courses}
-        />
-
-        {/* Category Progress & Quiz Button */}
-        {selectedCategory !== 'all' && categoryStats && (
-          <div className={`mb-6 p-4 rounded-lg ${isDark ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Trophy size={18} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
-                <span className={`font-medium ${themeClasses.text(theme)}`}>
-                  {t('progress.title')}
-                </span>
-              </div>
-              {currentQuiz && (
-                <button
-                  onClick={() => setShowQuiz(true)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-                    quizResult?.completed
-                      ? isDark
-                        ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
-                        : 'bg-green-100 text-green-700 hover:bg-green-200'
-                      : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                  }`}
-                >
-                  <ClipboardCheck size={18} />
-                  {quizResult?.completed
-                    ? `${t('quiz.title')}: ${quizResult.score}%`
-                    : t('quiz.takeQuiz')}
-                </button>
-              )}
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col h-full overflow-hidden rounded-2xl relative">
+        <div className="flex-1 overflow-y-auto pb-10">
+          {/* Header with Search */}
+          <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h2 className={`text-3xl font-bold ${
+                isDark ? 'text-white' : 'text-gray-900'
+              } mb-2 font-display`}>
+                {t('knowledge.title') || 'Knowledge Base'}
+              </h2>
+              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm max-w-xl`}>
+                {t('knowledge.subtitle')}
+              </p>
             </div>
 
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className={themeClasses.textSecondary(theme)}>
-                  {t('progress.materials')}
-                </span>
-                <span className={themeClasses.text(theme)}>
-                  {categoryStats.materialsCompleted} / {categoryStats.materialsTotal}
-                </span>
-              </div>
-              <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-gray-600' : 'bg-gray-200'}`}>
-                <div
-                  className="h-full bg-indigo-600 transition-all duration-300"
-                  style={{ width: `${categoryStats.materialsProgress}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Materials */}
-        <div className="space-y-4" role="list" aria-label={t('knowledge.materialsLabel')}>
-          {materials.length === 0 ? (
-            <div className={`text-center py-12 ${themeClasses.textSecondary(theme)}`}>
-              <Book className="w-16 h-16 mx-auto mb-4 opacity-30" aria-hidden="true" />
-              <p>{t('knowledge.noMaterials')}</p>
-            </div>
-          ) : (
-            materials.map((material) => (
-              <MaterialCard
-                key={material.id}
-                material={material}
-                onProgressChange={handleProgressChange}
+            {/* Search - Optional for now */}
+            {/* <div className="relative group w-full md:w-80">
+              <input
+                type="text"
+                placeholder="Search modules..."
+                className={`block w-full pl-10 pr-3 py-2.5 border ${
+                  isDark
+                    ? 'border-white/10 bg-white/5 text-gray-300 placeholder-gray-500'
+                    : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400'
+                } rounded-xl leading-5 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 sm:text-sm transition-all`}
               />
-            ))
-          )}
-        </div>
+            </div> */}
+          </div>
 
-        {/* Stats */}
-        <div className={`mt-6 pt-6 border-t ${themeClasses.border(theme)}`}>
-          <div className="flex gap-6 text-sm">
-            <div>
-              <span className={themeClasses.textSecondary(theme)}>{t('knowledge.totalCourses')}:</span>
-              <span className={`ml-2 font-semibold ${themeClasses.text(theme)}`}>
-                {courseData.courses.length}
-              </span>
+          {/* Category Progress & Quiz */}
+          {selectedCategory !== 'all' && categoryStats && (
+            <div className={`mb-8 p-6 rounded-2xl ${
+              isDark ? 'glass-card' : 'light-glass-card'
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Trophy size={18} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
+                  <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {t('progress.title')}
+                  </span>
+                </div>
+                {currentQuiz && (
+                  <button
+                    onClick={() => setShowQuiz(true)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition ${
+                      quizResult?.completed
+                        ? isDark
+                          ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
+                          : 'bg-green-100 text-green-700 hover:bg-green-200'
+                        : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
+                    }`}
+                  >
+                    <ClipboardCheck size={18} />
+                    {quizResult?.completed
+                      ? `${t('quiz.title')}: ${quizResult.score}%`
+                      : t('quiz.takeQuiz')}
+                  </button>
+                )}
+              </div>
+
+              {/* Progress Bar */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+                    {t('progress.materials')}
+                  </span>
+                  <span className={isDark ? 'text-white' : 'text-gray-900'}>
+                    {categoryStats.materialsCompleted} / {categoryStats.materialsTotal}
+                  </span>
+                </div>
+                <div className={`h-1.5 rounded-full overflow-hidden ${
+                  isDark ? 'bg-white/10' : 'bg-gray-200'
+                }`}>
+                  <div
+                    className={`h-full transition-all duration-500 ${
+                      categoryStats.materialsProgress === 100
+                        ? 'bg-green-500'
+                        : 'bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]'
+                    }`}
+                    style={{ width: `${categoryStats.materialsProgress}%` }}
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <span className={themeClasses.textSecondary(theme)}>{t('knowledge.totalMaterials')}:</span>
-              <span className={`ml-2 font-semibold ${themeClasses.text(theme)}`}>
-                {materials.length}
-              </span>
-            </div>
+          )}
+
+          {/* Materials Grid */}
+          <div className="mb-4">
+            <h3 className={`text-lg font-semibold ${
+              isDark ? 'text-white' : 'text-gray-900'
+            } mb-4`}>
+              {selectedCategory === 'all' ? t('knowledge.allModules') || 'All Modules' : courseData.courses.find(c => c.id === selectedCategory)?.name}
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {materials.length === 0 ? (
+              <div className={`col-span-full text-center py-12 ${
+                isDark ? 'text-gray-500' : 'text-gray-400'
+              }`}>
+                <Book className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                <p>{t('knowledge.noMaterials')}</p>
+              </div>
+            ) : (
+              materials.map((material) => (
+                <MaterialCard
+                  key={`${material.id}-${progressKey}`}
+                  material={material}
+                  onOpen={() => setSelectedMaterial(material)}
+                />
+              ))
+            )}
           </div>
         </div>
-      </section>
+      </main>
+
+      {/* Material Detail Modal */}
+      {selectedMaterial && (
+        <MaterialDetailView
+          material={selectedMaterial}
+          onClose={() => {
+            setSelectedMaterial(null);
+            handleProgressChange();
+          }}
+          onProgressChange={handleProgressChange}
+        />
+      )}
 
       {/* Quiz Modal */}
       {showQuiz && currentQuiz && (
