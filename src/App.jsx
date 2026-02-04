@@ -102,7 +102,7 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
             : 'bg-gradient-to-br from-blue-50 to-indigo-100'
         } transition-colors relative overflow-hidden`}
       >
-        <Header activeTab={activeTab} setActiveTab={setActiveTab} progressKey={progressKey} />
+        <Header activeTab={activeTab} setActiveTab={setActiveTab} progressKey={progressKey} onNewChat={handleNewChat} />
 
         <main className="flex-1 overflow-hidden pt-24 pb-6 px-6">
           <Suspense fallback={<LoadingFallback />}>

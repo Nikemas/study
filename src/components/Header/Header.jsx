@@ -13,9 +13,9 @@ import { themeClasses } from '../../utils/themeUtils';
 import { TabButton } from '../UI/TabButton';
 
 
-export const Header = ({ activeTab, setActiveTab }) => {
+export const Header = ({ activeTab, setActiveTab, onNewChat }) => {
   const { theme } = useTheme();
-  useLanguage(); // LanguageSelector might need it.
+  const { t } = useLanguage();
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
   return (
@@ -28,11 +28,16 @@ export const Header = ({ activeTab, setActiveTab }) => {
       >
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-4">
-            {/* Logo */}
+            {/* Logo — click to start new chat */}
             <div className="flex items-center gap-3 min-w-fit">
-              <div className="bg-primary p-2 rounded-lg shadow-lg shadow-primary/20">
+              <button
+                onClick={() => { onNewChat(); setActiveTab('chat'); }}
+                className="bg-primary p-2 rounded-lg shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-200"
+                aria-label={t('chat.newChat')}
+              >
                 <Book className="w-6 h-6 text-white" />
-              </div>
+              </button>
+
               <div className="hidden sm:block">
                 <h1 className={`text-lg font-bold leading-tight ${themeClasses.text(theme)}`}>
                   AI Platform
@@ -98,5 +103,6 @@ export const Header = ({ activeTab, setActiveTab }) => {
 
 Header.propTypes = {
   activeTab: PropTypes.oneOf(['chat', 'history', 'knowledge']).isRequired,
-  setActiveTab: PropTypes.func.isRequired
+  setActiveTab: PropTypes.func.isRequired,
+  onNewChat: PropTypes.func.isRequired
 };
