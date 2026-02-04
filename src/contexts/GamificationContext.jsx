@@ -15,9 +15,12 @@ import {
   getDefaultGamificationData
 } from '../config/gamificationConfig';
 
+import { useSettings } from './SettingsContext';
+
 const GamificationContext = createContext(null);
 
 export const GamificationProvider = ({ children, onAchievementUnlock }) => {
+  const { playSound } = useSettings();
   const [gamification, setGamification] = useState(() =>
     getGamificationData() || getDefaultGamificationData()
   );
@@ -61,11 +64,13 @@ export const GamificationProvider = ({ children, onAchievementUnlock }) => {
       setUnlockedAchievements(newUnlockedIds);
       saveAchievements(newUnlockedIds);
 
+      playSound('unlock');
+
       newAchievements.forEach(achievement => {
         onAchievementUnlock?.(achievement);
       });
     }
-  }, [unlockedAchievements, onAchievementUnlock]);
+  }, [unlockedAchievements, onAchievementUnlock, playSound]);
 
   const addXP = useCallback((type) => {
     const xpAmount = XP_REWARDS[type] || 0;
@@ -74,8 +79,8 @@ export const GamificationProvider = ({ children, onAchievementUnlock }) => {
     setGamification(prev => {
       const statKey = type === 'MESSAGE' ? 'messages'
         : type === 'LESSON' ? 'lessons'
-        : type === 'TEST' ? 'tests'
-        : null;
+          : type === 'TEST' ? 'tests'
+            : null;
 
       const newStats = statKey
         ? { ...prev.stats, [statKey]: (prev.stats[statKey] || 0) + 1 }

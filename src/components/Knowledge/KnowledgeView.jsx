@@ -19,14 +19,28 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const materials = useMemo(() => {
     if (!courseData?.materials) return [];
+
+    let filteredMaterials = [];
     if (selectedCategory === 'all') {
-      return Object.values(courseData.materials).flat();
+      filteredMaterials = Object.values(courseData.materials).flat();
+    } else {
+      filteredMaterials = courseData.materials[selectedCategory] || [];
     }
-    return courseData.materials[selectedCategory] || [];
-  }, [courseData, selectedCategory]);
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      return filteredMaterials.filter(m =>
+        m.title.toLowerCase().includes(query) ||
+        m.description.toLowerCase().includes(query)
+      );
+    }
+
+    return filteredMaterials;
+  }, [courseData, selectedCategory, searchQuery]);
 
   const currentQuiz = useMemo(() => {
     if (selectedCategory === 'all') return null;
@@ -73,14 +87,12 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
   return (
     <div className="flex h-full gap-6">
       {/* Sidebar - Desktop only */}
-      <aside className={`hidden lg:flex flex-col w-64 ${
-        isDark ? 'glass' : 'light-glass'
-      } rounded-2xl p-4 gap-6`}>
+      <aside className={`hidden lg:flex flex-col w-64 ${isDark ? 'glass' : 'light-glass'
+        } rounded-2xl p-4 gap-6`}>
         {/* Library Section */}
         <div className="flex flex-col gap-1">
-          <div className={`px-3 py-2 text-xs font-bold ${
-            isDark ? 'text-gray-500' : 'text-gray-600'
-          } uppercase tracking-wider`}>
+          <div className={`px-3 py-2 text-xs font-bold ${isDark ? 'text-gray-500' : 'text-gray-600'
+            } uppercase tracking-wider`}>
             {t('knowledge.library') || 'Library'}
           </div>
           <CategoryFilter
@@ -97,9 +109,8 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
           {/* Header with Search */}
           <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <h2 className={`text-3xl font-bold ${
-                isDark ? 'text-white' : 'text-gray-900'
-              } mb-2 font-display`}>
+              <h2 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'
+                } mb-2 font-display`}>
                 {t('knowledge.title') || 'Knowledge Base'}
               </h2>
               <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm max-w-xl`}>
@@ -107,25 +118,25 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
               </p>
             </div>
 
-            {/* Search - Optional for now */}
-            {/* <div className="relative group w-full md:w-80">
+            {/* Search */}
+            <div className="relative group w-full md:w-80">
               <input
                 type="text"
-                placeholder="Search modules..."
-                className={`block w-full pl-10 pr-3 py-2.5 border ${
-                  isDark
-                    ? 'border-white/10 bg-white/5 text-gray-300 placeholder-gray-500'
-                    : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400'
-                } rounded-xl leading-5 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 sm:text-sm transition-all`}
+                placeholder={t('knowledge.searchPlaceholder') || "Search modules..."}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`block w-full px-4 py-2.5 border ${isDark
+                  ? 'border-white/10 bg-white/5 text-gray-300 placeholder-gray-500'
+                  : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400'
+                  } rounded-xl leading-5 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 sm:text-sm transition-all`}
               />
-            </div> */}
+            </div>
           </div>
 
-          {/* Category Progress & Quiz */}
-          {selectedCategory !== 'all' && categoryStats && (
-            <div className={`mb-8 p-6 rounded-2xl ${
-              isDark ? 'glass-card' : 'light-glass-card'
-            }`}>
+          {/* Category Progress & Quiz - Hide when searching */}
+          {selectedCategory !== 'all' && !searchQuery && categoryStats && (
+            <div className={`mb-8 p-6 rounded-2xl ${isDark ? 'glass-card' : 'light-glass-card'
+              }`}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Trophy size={18} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
@@ -136,13 +147,12 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
                 {currentQuiz && (
                   <button
                     onClick={() => setShowQuiz(true)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition ${
-                      quizResult?.completed
-                        ? isDark
-                          ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
-                          : 'bg-green-100 text-green-700 hover:bg-green-200'
-                        : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
-                    }`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition ${quizResult?.completed
+                      ? isDark
+                        ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
+                        : 'bg-green-100 text-green-700 hover:bg-green-200'
+                      : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
+                      }`}
                   >
                     <ClipboardCheck size={18} />
                     {quizResult?.completed
@@ -162,15 +172,13 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
                     {categoryStats.materialsCompleted} / {categoryStats.materialsTotal}
                   </span>
                 </div>
-                <div className={`h-1.5 rounded-full overflow-hidden ${
-                  isDark ? 'bg-white/10' : 'bg-gray-200'
-                }`}>
+                <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'
+                  }`}>
                   <div
-                    className={`h-full transition-all duration-500 ${
-                      categoryStats.materialsProgress === 100
-                        ? 'bg-green-500'
-                        : 'bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]'
-                    }`}
+                    className={`h-full transition-all duration-500 ${categoryStats.materialsProgress === 100
+                      ? 'bg-green-500'
+                      : 'bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]'
+                      }`}
                     style={{ width: `${categoryStats.materialsProgress}%` }}
                   />
                 </div>
@@ -180,20 +188,34 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
 
           {/* Materials Grid */}
           <div className="mb-4">
-            <h3 className={`text-lg font-semibold ${
-              isDark ? 'text-white' : 'text-gray-900'
-            } mb-4`}>
-              {selectedCategory === 'all' ? t('knowledge.allModules') || 'All Modules' : courseData.courses.find(c => c.id === selectedCategory)?.name}
+            <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'
+              } mb-4`}>
+              {searchQuery
+                ? `${t('knowledge.searchResults') || 'Search results for'} "${searchQuery}"`
+                : (selectedCategory === 'all' ? t('knowledge.allModules') || 'All Modules' : courseData.courses.find(c => c.id === selectedCategory)?.name)
+              }
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {materials.length === 0 ? (
-              <div className={`col-span-full text-center py-12 ${
-                isDark ? 'text-gray-500' : 'text-gray-400'
-              }`}>
-                <Book className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                <p>{t('knowledge.noMaterials')}</p>
+              <div className={`col-span-full text-center py-12 ${isDark ? 'text-gray-500' : 'text-gray-400'
+                }`}>
+                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-white/5' : 'bg-gray-100'
+                  }`}>
+                  <Book className="w-8 h-8 opacity-50" />
+                </div>
+                <p className="text-lg font-medium mb-1">
+                  {searchQuery
+                    ? t('knowledge.noSearchResults') || 'No modules found'
+                    : t('knowledge.noMaterials')
+                  }
+                </p>
+                {searchQuery && (
+                  <p className="text-sm opacity-70">
+                    {t('knowledge.tryDifferentSearch') || 'Try specific keywords like "React" or "Basics"'}
+                  </p>
+                )}
               </div>
             ) : (
               materials.map((material) => (

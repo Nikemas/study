@@ -96,11 +96,10 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
   return (
     <div className={`app ${theme === 'dark' ? 'dark' : ''}`}>
       <div
-        className={`flex flex-col h-screen ${
-          theme === 'dark'
-            ? 'mesh-gradient'
-            : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-        } transition-colors relative overflow-hidden`}
+        className={`flex flex-col h-screen ${theme === 'dark'
+          ? 'mesh-gradient'
+          : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+          } transition-colors relative overflow-hidden`}
       >
         <Header activeTab={activeTab} setActiveTab={setActiveTab} progressKey={progressKey} onNewChat={handleNewChat} />
 
@@ -179,6 +178,8 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
   );
 }
 
+import { OnboardingModal } from './components/Onboarding/OnboardingModal';
+
 // Обертка с GamificationProvider для управления состоянием достижений
 function AppWithGamification() {
   const [pendingAchievement, setPendingAchievement] = useState(null);
@@ -197,20 +198,25 @@ function AppWithGamification() {
         pendingAchievement={pendingAchievement}
         onAchievementClose={handleAchievementClose}
       />
+      <OnboardingModal />
     </GamificationProvider>
   );
 }
 
+import { SettingsProvider } from './contexts/SettingsContext';
+
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <LanguageProvider>
-          <ToastProvider>
-            <AppWithGamification />
-          </ToastProvider>
-        </LanguageProvider>
-      </ThemeProvider>
+      <SettingsProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <ToastProvider>
+              <AppWithGamification />
+            </ToastProvider>
+          </LanguageProvider>
+        </ThemeProvider>
+      </SettingsProvider>
     </ErrorBoundary>
   );
 }

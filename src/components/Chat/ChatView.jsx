@@ -5,13 +5,27 @@ import PropTypes from 'prop-types';
 import { Message } from './Message';
 import { ChatInput } from './ChatInput';
 import { LoadingIndicator } from './LoadingIndicator';
+import { useSettings } from '../../contexts/SettingsContext';
 
 export const ChatView = ({ messages, loading, onSend, onRate }) => {
   const messagesEndRef = useRef(null);
+  const { playSound } = useSettings();
+  const prevMessagesLength = useRef(messages.length);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+
+    // Play sound for new messages
+    if (messages.length > prevMessagesLength.current) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'user') {
+        playSound('message');
+      } else {
+        playSound('receive');
+      }
+      prevMessagesLength.current = messages.length;
+    }
+  }, [messages, playSound]);
 
   return (
     <div className="h-full flex flex-col relative">
