@@ -13,11 +13,11 @@ import { Message } from '../Chat/Message';
 import { LoadingIndicator } from '../Chat/LoadingIndicator';
 
 const CATEGORY_CONFIG = {
-  python:     { emoji: '🐍', colorClass: 'text-blue-400',   bgClass: 'from-blue-600/20 to-yellow-500/20',  borderClass: 'border-blue-500/20' },
+  python: { emoji: '🐍', colorClass: 'text-blue-400', bgClass: 'from-blue-600/20 to-yellow-500/20', borderClass: 'border-blue-500/20' },
   javascript: { emoji: '⚡', colorClass: 'text-yellow-400', bgClass: 'from-yellow-400/20 to-orange-500/20', borderClass: 'border-yellow-500/20' },
-  html:       { emoji: '📄', colorClass: 'text-orange-400', bgClass: 'from-orange-500/20 to-red-500/20',    borderClass: 'border-orange-500/20' },
-  css:        { emoji: '🎨', colorClass: 'text-indigo-400', bgClass: 'from-indigo-500/20 to-blue-500/20',   borderClass: 'border-indigo-500/20' },
-  react:      { emoji: '⚛️', colorClass: 'text-cyan-400',   bgClass: 'from-cyan-500/20 to-blue-500/20',    borderClass: 'border-cyan-500/20' }
+  html: { emoji: '📄', colorClass: 'text-orange-400', bgClass: 'from-orange-500/20 to-red-500/20', borderClass: 'border-orange-500/20' },
+  css: { emoji: '🎨', colorClass: 'text-indigo-400', bgClass: 'from-indigo-500/20 to-blue-500/20', borderClass: 'border-indigo-500/20' },
+  react: { emoji: '⚛️', colorClass: 'text-cyan-400', bgClass: 'from-cyan-500/20 to-blue-500/20', borderClass: 'border-cyan-500/20' }
 };
 
 export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
@@ -108,9 +108,8 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className={`w-full max-w-7xl h-[90vh] ${
-        isDark ? 'glass' : 'light-glass'
-      } rounded-3xl shadow-2xl flex flex-col overflow-hidden`}>
+      <div className={`w-full max-w-7xl lg:h-[90vh] h-full ${isDark ? 'glass' : 'light-glass'
+        } rounded-3xl shadow-2xl flex flex-col overflow-hidden`}>
 
         {/* Header */}
         <div className={`flex items-center justify-between p-5 border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
@@ -144,10 +143,10 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
         </div>
 
         {/* Body */}
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
           {/* Left — Material Content */}
-          <div className={`${showChat ? 'w-1/2' : 'w-full'} flex flex-col transition-all duration-300 min-w-0`}>
+          <div className={`${showChat ? 'lg:w-1/2 w-full' : 'w-full'} flex flex-col transition-all duration-300 min-w-0`}>
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
 
               {/* Summary card */}
@@ -220,13 +219,12 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowChat(prev => !prev)}
-                  className={`flex-1 py-2.5 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${
-                    showChat
+                  className={`flex-1 py-2.5 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${showChat
                       ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                       : isDark
                         ? 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/10'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
-                  }`}
+                    }`}
                 >
                   <MessageCircle size={18} />
                   {showChat ? t('material.hideAI') : t('material.askAI')}
@@ -234,11 +232,10 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
 
                 <button
                   onClick={handleToggleComplete}
-                  className={`flex-1 py-2.5 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${
-                    isCompleted
+                  className={`flex-1 py-2.5 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${isCompleted
                       ? 'bg-green-600 text-white hover:bg-green-700 shadow-lg shadow-green-600/25'
                       : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-600/25'
-                  }`}
+                    }`}
                 >
                   <CheckCircle2 size={18} />
                   {isCompleted ? t('material.completed') : t('material.markComplete')}
@@ -249,7 +246,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
 
           {/* Right — AI Chat Panel */}
           {showChat && (
-            <div className={`w-1/2 border-l ${isDark ? 'border-white/10' : 'border-gray-200'} flex flex-col min-w-0`}>
+            <div className={`lg:w-1/2 w-full border-t lg:border-t-0 lg:border-l ${isDark ? 'border-white/10' : 'border-gray-200'} flex flex-col min-w-0`}>
               <div className={`p-4 border-b ${isDark ? 'border-white/10 bg-white/3' : 'border-gray-200 bg-white/60'}`}>
                 <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('material.aiHelper')}</h3>
                 <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{t('material.askQuestionAbout')} "{material.topic}"</p>

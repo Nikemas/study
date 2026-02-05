@@ -41,7 +41,11 @@ export default {
     totalCourses: 'Total courses',
     totalMaterials: 'Materials',
     allCourses: 'All courses',
-    filterLabel: 'Filter by category'
+    filterLabel: 'Filter by category',
+    searchPlaceholder: 'Search modules...',
+    searchResults: 'Search results for',
+    noSearchResults: 'No modules found',
+    tryDifferentSearch: 'Try specific keywords like "React" or "Basics"'
   },
   theme: {
     light: 'Light theme',
@@ -120,5 +124,68 @@ export default {
     markComplete: 'Mark as Completed',
     aiHelper: 'AI Assistant',
     askQuestionAbout: 'Ask questions about the topic'
+  },
+  settings: {
+    sound: 'Sound Effects',
+    on: 'On',
+    off: 'Off'
+  },
+  onboarding: {
+    welcome: {
+      title: 'Welcome to AI Study Platform',
+      description: 'Your personal AI-powered learning assistant. Let\'s take a quick tour!'
+    },
+    chat: {
+      title: 'Chat with AI Tutor',
+      description: 'Ask questions, get explanations, and practice conversational skills in the Chat tab.'
+    },
+    knowledge: {
+      title: 'Study Modules',
+      description: 'Explore structured learning materials and take quizzes in the Knowledge Base.'
+    },
+    progress: {
+      title: 'Track Your Progress',
+      description: 'Earn XP, unlock achievements, and level up as you learn!'
+    },
+    next: 'Next',
+    getStarted: 'Get Started'
+  },
+  achievements: {
+    title: 'Achievements',
+    unlocked: 'Unlocked',
+    items: {
+      first_message: {
+        title: 'First Step',
+        description: 'Send your first message'
+      },
+      curious: {
+        title: 'Curious',
+        description: 'Send 10 messages'
+      },
+      active_learner: {
+        title: 'Active Learner',
+        description: 'Send 50 messages'
+      },
+      communicator: {
+        title: 'Communicator',
+        description: 'Send 100 messages'
+      },
+      first_lesson: {
+        title: 'Beginner',
+        description: 'Complete your first lesson'
+      },
+      lesson_master: {
+        title: 'Apprentice',
+        description: 'Complete 5 lessons'
+      },
+      first_test: {
+        title: 'Tester',
+        description: 'Pass your first test'
+      },
+      level_5: {
+        title: 'Experienced',
+        description: 'Reach level 5'
+      }
+    }
   }
 };

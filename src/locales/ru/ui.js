@@ -41,7 +41,11 @@ const ruUI = {
     totalCourses: 'Всего курсов',
     totalMaterials: 'Материалов',
     allCourses: 'Все курсы',
-    filterLabel: 'Фильтр по категориям'
+    filterLabel: 'Фильтр по категориям',
+    searchPlaceholder: 'Поиск модулей...',
+    searchResults: 'Результаты поиска для',
+    noSearchResults: 'Модули не найдены',
+    tryDifferentSearch: 'Попробуйте другие ключевые слова, например "React" или "Основы"'
   },
   theme: {
     light: 'Светлая тема',
@@ -120,6 +124,69 @@ const ruUI = {
     markComplete: 'Отметить как выполненное',
     aiHelper: 'AI Помощник',
     askQuestionAbout: 'Задавайте вопросы по теме'
+  },
+  settings: {
+    sound: 'Звуковые эффекты',
+    on: 'Вкл',
+    off: 'Выкл'
+  },
+  onboarding: {
+    welcome: {
+      title: 'Добро пожаловать в AI Study Platform',
+      description: 'Ваш персональный AI-помощник в обучении. Давайте проведем быстрый тур!'
+    },
+    chat: {
+      title: 'Чат с AI-тьютором',
+      description: 'Задавайте вопросы, получайте объяснения и практикуйтесь в общении во вкладке Чат.'
+    },
+    knowledge: {
+      title: 'Учебные модули',
+      description: 'Изучайте структурированные материалы и проходите тесты в Базе Знаний.'
+    },
+    progress: {
+      title: 'Отслеживайте прогресс',
+      description: 'Зарабатывайте XP, открывайте достижения и повышайте уровень в процессе обучения!'
+    },
+    next: 'Далее',
+    getStarted: 'Начать'
+  },
+  achievements: {
+    title: 'Достижения',
+    unlocked: 'Открыто',
+    items: {
+      first_message: {
+        title: 'Первый шаг',
+        description: 'Отправь своё первое сообщение'
+      },
+      curious: {
+        title: 'Любопытный',
+        description: 'Отправь 10 сообщений'
+      },
+      active_learner: {
+        title: 'Активный ученик',
+        description: 'Отправь 50 сообщений'
+      },
+      communicator: {
+        title: 'Коммуникатор',
+        description: 'Отправь 100 сообщений'
+      },
+      first_lesson: {
+        title: 'Начинающий',
+        description: 'Изучи свой первый урок'
+      },
+      lesson_master: {
+        title: 'Ученик мастера',
+        description: 'Изучи 5 уроков'
+      },
+      first_test: {
+        title: 'Испытатель',
+        description: 'Пройди свой первый тест'
+      },
+      level_5: {
+        title: 'Опытный',
+        description: 'Достигни 5 уровня'
+      }
+    }
   }
 };
 

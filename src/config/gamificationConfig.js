@@ -1,5 +1,6 @@
 // src/config/gamificationConfig.js
 // Конфигурация системы геймификации
+import { ACHIEVEMENTS_CONFIG } from '../data/achievements';
 
 export const LEVEL_CONFIG = {
   thresholds: [
@@ -19,8 +20,6 @@ export const XP_REWARDS = {
   LESSON: 10,
   TEST: 20,
 };
-
-import { ACHIEVEMENTS_CONFIG } from '../data/achievements';
 
 export { ACHIEVEMENTS_CONFIG };
 

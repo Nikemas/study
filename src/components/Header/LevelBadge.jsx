@@ -17,8 +17,8 @@ export const LevelBadge = memo(() => {
       <button
         onClick={() => setShowAchievements(true)}
         className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition hover:scale-105 active:scale-95 cursor-pointer text-left ${theme === 'dark'
-            ? 'bg-gray-800 border border-gray-700 hover:border-indigo-500/50'
-            : 'bg-gray-100 border border-gray-200 hover:border-indigo-300'
+          ? 'bg-gray-800 border border-gray-700 hover:border-indigo-500/50'
+          : 'bg-gray-100 border border-gray-200 hover:border-indigo-300'
           }`}
         role="button"
         aria-label={`Уровень ${level}: ${levelTitle}, ${xp} XP. Нажмите, чтобы открыть достижения.`}
@@ -37,12 +37,11 @@ export const LevelBadge = memo(() => {
           </span>
         </div>
 
-        <div className="flex flex-col min-w-[80px]">
+        <div className="hidden sm:flex flex-col min-w-[80px]">
           <span className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
             {levelTitle}
           </span>
-
           <div className={`h-1.5 rounded-full overflow-hidden ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
             }`}>
             <div

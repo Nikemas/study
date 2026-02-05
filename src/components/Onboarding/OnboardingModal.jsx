@@ -1,40 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Sparkles, MessageSquare, Trophy, Book, X, ArrowRight, Check } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
-
-const ONBOARDING_STEPS = [
-    {
-        id: 'welcome',
-        title: 'Welcome to AI Study Platform',
-        description: 'Your personal AI-powered learning assistant. Let\'s take a quick tour!',
-        icon: <Sparkles className="w-8 h-8 text-indigo-500" />
-    },
-    {
-        id: 'chat',
-        title: 'Chat with AI Tutor',
-        description: 'Ask questions, get explanations, and practice conversational skills in the Chat tab.',
-        icon: <MessageSquare className="w-8 h-8 text-blue-500" />
-    },
-    {
-        id: 'knowledge',
-        title: 'Study Modules',
-        description: 'Explore structured learning materials and take quizzes in the Knowledge Base.',
-        icon: <Book className="w-8 h-8 text-purple-500" />
-    },
-    {
-        id: 'progress',
-        title: 'Track Your Progress',
-        description: 'Earn XP, unlock achievements, and level up as you learn!',
-        icon: <Trophy className="w-8 h-8 text-yellow-500" />
-    }
-];
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export const OnboardingModal = ({ onComplete }) => {
     const { theme } = useTheme();
+    const { t } = useLanguage();
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
+
+    const steps = useMemo(() => [
+        {
+            id: 'welcome',
+            title: t('onboarding.welcome.title') || 'Welcome to AI Study Platform',
+            description: t('onboarding.welcome.description') || 'Your personal AI-powered learning assistant. Let\'s take a quick tour!',
+            icon: <Sparkles className="w-8 h-8 text-indigo-500" />
+        },
+        {
+            id: 'chat',
+            title: t('onboarding.chat.title') || 'Chat with AI Tutor',
+            description: t('onboarding.chat.description') || 'Ask questions, get explanations, and practice conversational skills in the Chat tab.',
+            icon: <MessageSquare className="w-8 h-8 text-blue-500" />
+        },
+        {
+            id: 'knowledge',
+            title: t('onboarding.knowledge.title') || 'Study Modules',
+            description: t('onboarding.knowledge.description') || 'Explore structured learning materials and take quizzes in the Knowledge Base.',
+            icon: <Book className="w-8 h-8 text-purple-500" />
+        },
+        {
+            id: 'progress',
+            title: t('onboarding.progress.title') || 'Track Your Progress',
+            description: t('onboarding.progress.description') || 'Earn XP, unlock achievements, and level up as you learn!',
+            icon: <Trophy className="w-8 h-8 text-yellow-500" />
+        }
+    ], [t]);
 
     useEffect(() => {
         const hasSeenOnboarding = localStorage.getItem('onboarding_completed');
@@ -44,7 +46,7 @@ export const OnboardingModal = ({ onComplete }) => {
     }, []);
 
     const handleNext = () => {
-        if (currentStepIndex < ONBOARDING_STEPS.length - 1) {
+        if (currentStepIndex < steps.length - 1) {
             setCurrentStepIndex(prev => prev + 1);
         } else {
             handleComplete();
@@ -59,9 +61,9 @@ export const OnboardingModal = ({ onComplete }) => {
 
     if (!isOpen) return null;
 
-    const currentStep = ONBOARDING_STEPS[currentStepIndex];
+    const currentStep = steps[currentStepIndex];
     const isDark = theme === 'dark';
-    const isLastStep = currentStepIndex === ONBOARDING_STEPS.length - 1;
+    const isLastStep = currentStepIndex === steps.length - 1;
 
     return createPortal(
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
@@ -105,7 +107,7 @@ export const OnboardingModal = ({ onComplete }) => {
 
                     {/* Progress Dots */}
                     <div className="flex justify-center gap-2 mb-8">
-                        {ONBOARDING_STEPS.map((_, index) => (
+                        {steps.map((_, index) => (
                             <div
                                 key={index}
                                 className={`h-2 rounded-full transition-all duration-300 ${index === currentStepIndex
@@ -128,11 +130,11 @@ export const OnboardingModal = ({ onComplete }) => {
                     >
                         {isLastStep ? (
                             <>
-                                Get Started <Check size={20} />
+                                {t('onboarding.getStarted') || 'Get Started'} <Check size={20} />
                             </>
                         ) : (
                             <>
-                                Next <ArrowRight size={20} />
+                                {t('onboarding.next') || 'Next'} <ArrowRight size={20} />
                             </>
                         )}
                     </button>

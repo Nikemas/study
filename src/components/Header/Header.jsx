@@ -22,8 +22,8 @@ export const Header = ({ activeTab, setActiveTab, onNewChat }) => {
     <>
       <header
         className={`sticky top-0 z-50 border-b transition-colors duration-300 backdrop-blur-md ${theme === 'dark'
-            ? 'bg-gray-900/80 border-gray-800'
-            : 'bg-white/80 border-gray-200'
+          ? 'bg-gray-900/80 border-gray-800'
+          : 'bg-white/80 border-gray-200'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -49,7 +49,7 @@ export const Header = ({ activeTab, setActiveTab, onNewChat }) => {
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 flex justify-center overflow-x-auto no-scrollbar mx-2">
+            <nav className="hidden md:flex flex-1 justify-center overflow-x-auto no-scrollbar mx-2">
               <div className="flex gap-1 p-1 bg-gray-100/50 dark:bg-gray-800/50 rounded-xl">
                 <TabButton
                   active={activeTab === 'chat'}
@@ -75,15 +75,15 @@ export const Header = ({ activeTab, setActiveTab, onNewChat }) => {
             </nav>
 
             {/* Actions */}
-            <nav className="flex gap-2 items-center min-w-fit">
+            <nav className="flex gap-1 md:gap-2 items-center min-w-fit">
               <LevelBadge />
               <LanguageSelector />
               <ThemeToggle />
               <button
                 onClick={() => setIsApiKeyModalOpen(true)}
                 className={`p-2 rounded-lg transition ${theme === 'dark'
-                    ? 'hover:bg-gray-800 text-gray-400 hover:text-white'
-                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
+                  ? 'hover:bg-gray-800 text-gray-400 hover:text-white'
+                  : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
                   }`}
                 aria-label="Настройки"
               >

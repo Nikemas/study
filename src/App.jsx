@@ -8,11 +8,14 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { GamificationProvider } from './contexts/GamificationContext';
 import { Header } from './components/Header/Header';
+import { MobileNavigation } from './components/Header/MobileNavigation';
 import { ToastContainer } from './components/UI/ToastContainer';
 import { AchievementPopup } from './components/Gamification/AchievementPopup';
 import { useChat } from './hooks/useChat';
 import { useTheme } from './hooks/useTheme';
 import { useChatHistory } from './hooks/useChatHistory';
+import { OnboardingModal } from './components/Onboarding/OnboardingModal';
+import { SettingsProvider } from './contexts/SettingsContext';
 import './App.css';
 
 // Варианты анимации для переходов между вкладками
@@ -103,7 +106,7 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
       >
         <Header activeTab={activeTab} setActiveTab={setActiveTab} progressKey={progressKey} onNewChat={handleNewChat} />
 
-        <main className="flex-1 overflow-hidden pt-24 pb-6 px-6">
+        <main className="flex-1 overflow-hidden pt-20 md:pt-24 pb-24 md:pb-6 px-4 md:px-6">
           <Suspense fallback={<LoadingFallback />}>
             <AnimatePresence mode="wait">
               {activeTab === 'chat' && (
@@ -162,6 +165,7 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
             </AnimatePresence>
           </Suspense>
         </main>
+        <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
       {/* Toast уведомления */}
@@ -177,8 +181,6 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
     </div>
   );
 }
-
-import { OnboardingModal } from './components/Onboarding/OnboardingModal';
 
 // Обертка с GamificationProvider для управления состоянием достижений
 function AppWithGamification() {
@@ -202,8 +204,6 @@ function AppWithGamification() {
     </GamificationProvider>
   );
 }
-
-import { SettingsProvider } from './contexts/SettingsContext';
 
 function App() {
   return (

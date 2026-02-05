@@ -5,12 +5,17 @@ import { LayoutGrid } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-export const CategoryFilter = ({ selectedCategory, onSelectCategory, courses }) => {
+export const CategoryFilter = ({ selectedCategory, onSelectCategory, courses, direction = 'vertical' }) => {
   const { theme } = useTheme();
   const { t } = useLanguage();
   const isDark = theme === 'dark';
 
+  const containerClass = direction === 'horizontal'
+    ? 'flex flex-row overflow-x-auto gap-2 pb-2 no-scrollbar'
+    : 'flex flex-col gap-1';
+
   const getButtonClass = (isActive) => {
+    // ... existing logic ...
     if (isActive) {
       return isDark
         ? 'bg-white/10 text-white border border-white/5 shadow-sm'
@@ -22,7 +27,7 @@ export const CategoryFilter = ({ selectedCategory, onSelectCategory, courses }) 
   };
 
   return (
-    <nav className="flex flex-col gap-1" role="tablist" aria-label={t('knowledge.filterLabel')}>
+    <nav className={containerClass} role="tablist" aria-label={t('knowledge.filterLabel')}>
       <button
         onClick={() => onSelectCategory('all')}
         className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${getButtonClass(selectedCategory === 'all')}`}
@@ -62,5 +67,6 @@ CategoryFilter.propTypes = {
       name: PropTypes.string.isRequired,
       icon: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  direction: PropTypes.oneOf(['vertical', 'horizontal'])
 };

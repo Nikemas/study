@@ -133,6 +133,16 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
             </div>
           </div>
 
+          {/* Mobile Category Filter */}
+          <div className="lg:hidden mb-6">
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              onSelectCategory={handleCategoryChange}
+              courses={courseData.courses}
+              direction="horizontal"
+            />
+          </div>
+
           {/* Category Progress & Quiz - Hide when searching */}
           {selectedCategory !== 'all' && !searchQuery && categoryStats && (
             <div className={`mb-8 p-6 rounded-2xl ${isDark ? 'glass-card' : 'light-glass-card'

@@ -30,8 +30,8 @@ export const ChatView = ({ messages, loading, onSend, onRate }) => {
   return (
     <div className="h-full flex flex-col relative">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 pb-32">
-        <div className="flex flex-col gap-10 py-4">
+      <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 pb-40 md:pb-32">
+        <div className="flex flex-col gap-4 md:gap-10 py-4">
           {messages.map((msg) => (
             <Message key={msg.id} message={msg} onRate={onRate} />
           ))}
@@ -41,7 +41,7 @@ export const ChatView = ({ messages, loading, onSend, onRate }) => {
       </div>
 
       {/* Fixed Input at Bottom */}
-      <div className="fixed bottom-8 left-0 right-0 px-4 flex flex-col items-center z-40 pointer-events-none">
+      <div className="fixed bottom-20 md:bottom-8 left-0 right-0 px-4 flex flex-col items-center z-40 pointer-events-none">
         <div className="w-full max-w-3xl pointer-events-auto">
           <ChatInput onSend={onSend} loading={loading} />
         </div>

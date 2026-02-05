@@ -22,21 +22,19 @@ export const Message = memo(({ message, onRate }) => {
 
   if (isUser) {
     return (
-      <article className="flex flex-row-reverse gap-4 group animate-slideUp">
+      <article className="flex flex-row-reverse gap-2 md:gap-4 group animate-slideUp">
         {/* User Avatar */}
         <div className="flex-shrink-0 mt-1">
-          <div className={`w-8 h-8 rounded-full ${
-            isDark ? 'bg-white/10 border border-white/5' : 'bg-gray-200 border border-gray-300'
-          } flex items-center justify-center`}>
+          <div className={`w-8 h-8 rounded-full ${isDark ? 'bg-white/10 border border-white/5' : 'bg-gray-200 border border-gray-300'
+            } flex items-center justify-center`}>
             <User className={`w-4 h-4 ${isDark ? 'text-white' : 'text-gray-700'}`} />
           </div>
         </div>
 
         {/* User Message */}
         <div className="flex flex-col items-end gap-2 max-w-2xl">
-          <div className={`${
-            isDark ? 'glass border-primary/20 bg-primary/10' : 'bg-indigo-100 border border-indigo-200'
-          } rounded-2xl rounded-tr-sm px-5 py-3 ${isDark ? 'shadow-glow-sm' : 'shadow-sm'}`}>
+          <div className={`${isDark ? 'glass border-primary/20 bg-primary/10' : 'bg-indigo-100 border border-indigo-200'
+            } rounded-2xl rounded-tr-sm px-4 py-2 md:px-5 md:py-3 ${isDark ? 'shadow-glow-sm' : 'shadow-sm'}`}>
             <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'} font-medium whitespace-pre-wrap`}>
               {message.content}
             </p>
@@ -50,12 +48,11 @@ export const Message = memo(({ message, onRate }) => {
   }
 
   return (
-    <article className="flex gap-4 group animate-slideUp">
+    <article className="flex gap-2 md:gap-4 group animate-slideUp">
       {/* AI Avatar */}
       <div className="flex-shrink-0 mt-1">
-        <div className={`w-8 h-8 rounded-xl ${
-          isDark ? 'bg-surface border border-white/10' : 'bg-indigo-100 border border-indigo-200'
-        } flex items-center justify-center text-primary ${isDark ? 'shadow-glow-sm' : ''}`}>
+        <div className={`w-8 h-8 rounded-xl ${isDark ? 'bg-surface border border-white/10' : 'bg-indigo-100 border border-indigo-200'
+          } flex items-center justify-center text-primary ${isDark ? 'shadow-glow-sm' : ''}`}>
           <Bot className="w-4 h-4" />
         </div>
       </div>
@@ -86,11 +83,10 @@ export const Message = memo(({ message, onRate }) => {
                   />
                 ) : (
                   <code
-                    className={`${
-                      isDark
+                    className={`${isDark
                         ? 'text-indigo-300 bg-indigo-500/10'
                         : 'text-indigo-700 bg-indigo-100'
-                    } px-1.5 py-0.5 rounded text-xs font-mono`}
+                      } px-1.5 py-0.5 rounded text-xs font-mono`}
                     {...props}
                   >
                     {children}
@@ -104,14 +100,12 @@ export const Message = memo(({ message, onRate }) => {
                 return <strong className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{children}</strong>;
               },
               ul({ children }) {
-                return <ul className={`list-disc pl-4 space-y-1 mt-2 mb-4 ${
-                  isDark ? 'text-gray-400 marker:text-indigo-500' : 'text-gray-600 marker:text-indigo-600'
-                }`}>{children}</ul>;
+                return <ul className={`list-disc pl-4 space-y-1 mt-2 mb-4 ${isDark ? 'text-gray-400 marker:text-indigo-500' : 'text-gray-600 marker:text-indigo-600'
+                  }`}>{children}</ul>;
               },
               ol({ children }) {
-                return <ol className={`list-decimal pl-4 space-y-1 mt-2 mb-4 ${
-                  isDark ? 'text-gray-400' : 'text-gray-600'
-                }`}>{children}</ol>;
+                return <ol className={`list-decimal pl-4 space-y-1 mt-2 mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'
+                  }`}>{children}</ol>;
               }
             }}
           >
