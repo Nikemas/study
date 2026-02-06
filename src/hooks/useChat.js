@@ -1,7 +1,7 @@
 // src/hooks/useChat.js
-// Хук для управления чатом с AI
+// ��� ��� ���������� ����� � AI
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { sendMessageToAI } from '../services/aiService';
 import { AI_CONFIG } from '../config/aiConfig';
 import { generateId } from '../utils/generateId';
@@ -10,30 +10,68 @@ import { useGamification } from '../contexts/GamificationContext';
 
 const createInitialMessage = (content) => ({
   role: ROLES.ASSISTANT,
-  content,
+  content: content || '',
   timestamp: new Date(),
   id: 'initial-message'
 });
 
-export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, contextOptions = {}) => {
-  const initialMessage = useMemo(
-    () => createInitialMessage(initialMessageContent),
-    [initialMessageContent]
-  );
+const normalizeOptions = (arg1, language, initialMessageContent, t, contextOptions) => {
+  if (arg1 && typeof arg1 === 'object' && !Array.isArray(arg1)) {
+    return {
+      onSaveChat: arg1.onSaveChat,
+      language: arg1.language || 'ru',
+      initialMessageContent: arg1.initialMessageContent,
+      initialMessages: arg1.initialMessages,
+      t: arg1.t || ((key) => key),
+      contextOptions: arg1.contextOptions || {},
+      resetKey: arg1.resetKey
+    };
+  }
 
-  const [messages, setMessages] = useState([initialMessage]);
-  const [loading, setLoading] = useState(false);
+  return {
+    onSaveChat: arg1,
+    language: language || 'ru',
+    initialMessageContent,
+    t: t || ((key) => key),
+    contextOptions: contextOptions || {},
+    resetKey: undefined,
+    initialMessages: undefined
+  };
+};
+
+export const useChat = (arg1, language, initialMessageContent, t, contextOptions = {}) => {
+  const options = normalizeOptions(arg1, language, initialMessageContent, t, contextOptions);
+  const { onSaveChat, contextOptions: ctxOptions, initialMessages, resetKey } = options;
   const { addXP } = useGamification();
 
-  // Update initial message when language changes
+  const computedInitialMessages = useMemo(() => {
+    if (initialMessages && initialMessages.length > 0) return initialMessages;
+    return [createInitialMessage(options.initialMessageContent)];
+  }, [initialMessages, options.initialMessageContent]);
+
+  const [messages, setMessages] = useState(computedInitialMessages);
+  const [loading, setLoading] = useState(false);
+  const messagesRef = useRef(messages);
+
   useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  useEffect(() => {
+    if (resetKey !== undefined) {
+      setMessages(computedInitialMessages);
+    }
+  }, [resetKey, computedInitialMessages]);
+
+  useEffect(() => {
+    if (initialMessages && initialMessages.length > 0) return;
     setMessages(prev => {
       if (prev.length === 1 && prev[0].id === 'initial-message') {
-        return [createInitialMessage(initialMessageContent)];
+        return [createInitialMessage(options.initialMessageContent)];
       }
       return prev;
     });
-  }, [initialMessageContent]);
+  }, [options.initialMessageContent, initialMessages]);
 
   const sendMessage = async (userQuestion) => {
     if (!userQuestion.trim() || loading) return;
@@ -45,7 +83,8 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
       id: generateId()
     };
 
-    const newMessages = [...messages, userMessage];
+    const baseMessages = messagesRef.current;
+    const newMessages = [...baseMessages, userMessage];
     setMessages(newMessages);
     setLoading(true);
 
@@ -57,7 +96,7 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
           content: msg.content
         }));
 
-      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory, language, contextOptions);
+      const aiResponseText = await sendMessageToAI(userQuestion, conversationHistory, options.language, ctxOptions);
 
       const aiResponse = {
         role: ROLES.ASSISTANT,
@@ -69,17 +108,15 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
       const finalMessages = [...newMessages, aiResponse];
       setMessages(finalMessages);
 
-      // Начисляем XP за отправку сообщения
       addXP('MESSAGE');
 
       if (onSaveChat) {
         onSaveChat(finalMessages);
       }
     } catch (error) {
-      // Если ошибка имеет код локализации, используем t() для перевода
       const errorContent = error.code && error.code.startsWith('errors.')
-        ? t(error.code)
-        : t('errors.apiError');
+        ? options.t(error.code)
+        : options.t('errors.apiError');
 
       const errorMessage = {
         role: ROLES.ASSISTANT,
@@ -88,14 +125,15 @@ export const useChat = (onSaveChat, language = 'ru', initialMessageContent, t, c
         id: generateId(),
         error: true
       };
-      setMessages([...newMessages, errorMessage]);
+
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setLoading(false);
     }
   };
 
   const clearHistory = () => {
-    setMessages([createInitialMessage(initialMessageContent)]);
+    setMessages(computedInitialMessages);
   };
 
   const loadMessages = (loadedMessages) => {

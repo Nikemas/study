@@ -11,6 +11,9 @@ import { MaterialDetailView } from './MaterialDetailView';
 import { Quiz } from './Quiz';
 import { getQuizByCategory } from '../../data/courseData';
 import { getCategoryStats, getQuizResult } from '../../services/progressService';
+import { SectionHeader } from '../UI/SectionHeader';
+import { SearchInput } from '../UI/SearchInput';
+import { Card } from '../UI/Card';
 
 export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
   const { theme } = useTheme();
@@ -34,8 +37,8 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       return filteredMaterials.filter(m =>
-        m.title.toLowerCase().includes(query) ||
-        m.description.toLowerCase().includes(query)
+        m.topic.toLowerCase().includes(query) ||
+        m.content.toLowerCase().includes(query)
       );
     }
 
@@ -86,13 +89,9 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
 
   return (
     <div className="flex h-full gap-6">
-      {/* Sidebar - Desktop only */}
-      <aside className={`hidden lg:flex flex-col w-64 ${isDark ? 'glass' : 'light-glass'
-        } rounded-2xl p-4 gap-6`}>
-        {/* Library Section */}
+      <aside className={`hidden lg:flex flex-col w-64 ${isDark ? 'glass' : 'light-glass'} rounded-2xl p-4 gap-6`}>
         <div className="flex flex-col gap-1">
-          <div className={`px-3 py-2 text-xs font-bold ${isDark ? 'text-gray-500' : 'text-gray-600'
-            } uppercase tracking-wider`}>
+          <div className="px-3 py-2 text-xs font-bold text-muted uppercase tracking-wider">
             {t('knowledge.library') || 'Library'}
           </div>
           <CategoryFilter
@@ -103,37 +102,22 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden rounded-2xl relative">
         <div className="flex-1 overflow-y-auto pb-10">
-          {/* Header with Search */}
-          <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h2 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'
-                } mb-2 font-display`}>
-                {t('knowledge.title') || 'Knowledge Base'}
-              </h2>
-              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm max-w-xl`}>
-                {t('knowledge.subtitle')}
-              </p>
-            </div>
+          <SectionHeader
+            title={t('knowledge.title') || 'Knowledge Base'}
+            subtitle={t('knowledge.subtitle')}
+            action={(
+              <div className="w-full md:w-80">
+                <SearchInput
+                  placeholder={t('knowledge.searchPlaceholder') || 'Search modules...'}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            )}
+          />
 
-            {/* Search */}
-            <div className="relative group w-full md:w-80">
-              <input
-                type="text"
-                placeholder={t('knowledge.searchPlaceholder') || "Search modules..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`block w-full px-4 py-2.5 border ${isDark
-                  ? 'border-white/10 bg-white/5 text-gray-300 placeholder-gray-500'
-                  : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400'
-                  } rounded-xl leading-5 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 sm:text-sm transition-all`}
-              />
-            </div>
-          </div>
-
-          {/* Mobile Category Filter */}
           <div className="lg:hidden mb-6">
             <CategoryFilter
               selectedCategory={selectedCategory}
@@ -143,14 +127,12 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
             />
           </div>
 
-          {/* Category Progress & Quiz - Hide when searching */}
           {selectedCategory !== 'all' && !searchQuery && categoryStats && (
-            <div className={`mb-8 p-6 rounded-2xl ${isDark ? 'glass-card' : 'light-glass-card'
-              }`}>
+            <Card className="mb-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Trophy size={18} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
-                  <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <Trophy size={18} className="text-warning" />
+                  <span className="font-medium text-text">
                     {t('progress.title')}
                   </span>
                 </div>
@@ -158,10 +140,8 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
                   <button
                     onClick={() => setShowQuiz(true)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition ${quizResult?.completed
-                      ? isDark
-                        ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
-                        : 'bg-green-100 text-green-700 hover:bg-green-200'
-                      : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
+                      ? 'bg-success/20 text-success hover:bg-success/30'
+                      : 'bg-primary text-white hover:brightness-110 shadow-soft'
                       }`}
                   >
                     <ClipboardCheck size={18} />
@@ -172,47 +152,39 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
                 )}
               </div>
 
-              {/* Progress Bar */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                    {t('progress.materials')}
-                  </span>
-                  <span className={isDark ? 'text-white' : 'text-gray-900'}>
+                  <span className="text-muted">{t('progress.materials')}</span>
+                  <span className="text-text">
                     {categoryStats.materialsCompleted} / {categoryStats.materialsTotal}
                   </span>
                 </div>
-                <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'
-                  }`}>
+                <div className="h-1.5 rounded-full overflow-hidden bg-border/40">
                   <div
                     className={`h-full transition-all duration-500 ${categoryStats.materialsProgress === 100
-                      ? 'bg-green-500'
-                      : 'bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]'
+                      ? 'bg-success'
+                      : 'bg-primary shadow-[0_0_10px_rgba(255,122,0,0.35)]'
                       }`}
                     style={{ width: `${categoryStats.materialsProgress}%` }}
                   />
                 </div>
               </div>
-            </div>
+            </Card>
           )}
 
-          {/* Materials Grid */}
           <div className="mb-4">
-            <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'
-              } mb-4`}>
+            <h3 className="text-lg font-semibold text-text mb-4">
               {searchQuery
                 ? `${t('knowledge.searchResults') || 'Search results for'} "${searchQuery}"`
-                : (selectedCategory === 'all' ? t('knowledge.allModules') || 'All Modules' : courseData.courses.find(c => c.id === selectedCategory)?.name)
+                : (selectedCategory === 'all' ? t('knowledge.allCourses') || 'All Courses' : courseData.courses.find(c => c.id === selectedCategory)?.name)
               }
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {materials.length === 0 ? (
-              <div className={`col-span-full text-center py-12 ${isDark ? 'text-gray-500' : 'text-gray-400'
-                }`}>
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-white/5' : 'bg-gray-100'
-                  }`}>
+              <div className="col-span-full text-center py-12 text-muted">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-border/20">
                   <Book className="w-8 h-8 opacity-50" />
                 </div>
                 <p className="text-lg font-medium mb-1">
@@ -240,7 +212,6 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
         </div>
       </main>
 
-      {/* Material Detail Modal */}
       {selectedMaterial && (
         <MaterialDetailView
           material={selectedMaterial}
@@ -252,7 +223,6 @@ export const KnowledgeView = ({ onCategoryChange, onProgressChange }) => {
         />
       )}
 
-      {/* Quiz Modal */}
       {showQuiz && currentQuiz && (
         <Quiz
           quiz={currentQuiz}

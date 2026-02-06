@@ -3,14 +3,11 @@
 import { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { MessageSquare, Trash2 } from 'lucide-react';
-import { useTheme } from '../../hooks/useTheme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
-  const { theme } = useTheme();
   const { t, language } = useLanguage();
   const [showConfirm, setShowConfirm] = useState(false);
-  const isDark = theme === 'dark';
 
   const handleDelete = (e) => {
     e.stopPropagation();
@@ -25,35 +22,24 @@ export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
 
   return (
     <article
-      className={`group relative ${isDark ? 'glass-card' : 'light-glass-card'
-        } rounded-2xl p-4 md:p-6 hover-lift hover:shadow-glow transition-all duration-300 cursor-pointer overflow-hidden`}
+      className="group relative surface-card p-4 md:p-6 hover-lift transition-all duration-300 cursor-pointer overflow-hidden"
       onClick={() => onLoad(chat.id)}
       role="listitem"
     >
-      {/* Hover Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="flex items-center justify-between gap-4 relative z-10">
-        {/* Icon and Content */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
-          {/* Icon */}
-          <div className={`w-12 h-12 rounded-xl ${isDark
-            ? 'bg-indigo-500/10 border border-indigo-500/20'
-            : 'bg-indigo-100 border border-indigo-200'
-            } flex items-center justify-center flex-shrink-0 ${isDark ? 'shadow-[0_0_15px_rgba(99,102,241,0.15)]' : ''
-            }`}>
-            <MessageSquare className="w-5 h-5 text-indigo-400" />
+          <div className="w-12 h-12 rounded-lg bg-primary/10 border border-border flex items-center justify-center flex-shrink-0">
+            <MessageSquare className="w-5 h-5 text-primary" />
           </div>
 
-          {/* Content */}
           <div className="flex-1 min-w-0">
-            <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'
-              } mb-1 truncate group-hover:text-indigo-400 transition-colors`}>
+            <h3 className="text-sm font-semibold text-text mb-1 truncate group-hover:text-primary transition-colors">
               {chat.title}
             </h3>
-            <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'
-              }`}>
-              {chat.messages.length} {t('history.messages')} â€¢ {' '}
+            <p className="text-xs text-muted">
+              {chat.messages.length} {t('history.messages')} • {' '}
               {new Date(chat.timestamp).toLocaleDateString(
                 language === 'ky' ? 'ky-KG' : language === 'en' ? 'en-US' : 'ru-RU',
                 {
@@ -68,14 +54,11 @@ export const HistoryItem = memo(({ chat, onLoad, onDelete }) => {
           </div>
         </div>
 
-        {/* Delete Button */}
         <button
           onClick={handleDelete}
           className={`p-2 rounded-lg md:opacity-0 md:group-hover:opacity-100 transition flex-shrink-0 ${showConfirm
-            ? 'opacity-100 bg-red-600 text-white'
-            : isDark
-              ? 'hover:bg-red-900/20 text-gray-400 hover:text-red-400'
-              : 'hover:bg-red-50 text-gray-500 hover:text-red-600'
+            ? 'opacity-100 bg-danger text-white'
+            : 'hover:bg-danger/10 text-muted hover:text-danger'
             }`}
           title={showConfirm ? t('history.deleteHint') : t('history.deleteChat')}
           aria-label={showConfirm ? t('history.confirmDelete') : t('history.deleteChat')}

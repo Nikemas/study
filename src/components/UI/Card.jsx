@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
+import { cn } from '../../utils/themeUtils';
 
-export const Card = ({ children, className = '', ...props }) => {
-    return (
-        <div
-            className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm ${className}`}
-            {...props}
-        >
-            {children}
-        </div>
-    );
+export const Card = ({ className, children, variant = 'surface', ...props }) => {
+  const variants = {
+    surface: 'surface-card',
+    glass: 'glass-card',
+    soft: 'bg-border/20 border border-border'
+  };
+
+  return (
+    <div className={cn('rounded-lg p-4', variants[variant], className)} {...props}>
+      {children}
+    </div>
+  );
 };
 
 Card.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.node,
+  variant: PropTypes.oneOf(['surface', 'glass', 'soft'])
 };

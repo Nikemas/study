@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const withOpacity = (variable) => `rgb(var(${variable}) / <alpha-value>)`;
+
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -7,37 +9,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#818cf8',
-          400: '#a5b4fc',
-          500: '#818cf8',
-          600: '#6366f1',
-        },
-        secondary: {
-          DEFAULT: '#a78bfa',
-          400: '#c4b5fd',
-          500: '#a78bfa',
-          600: '#9333ea',
-        },
-        background: '#050505',
-        surface: {
-          DEFAULT: '#0f0f0f',
-          light: '#1a1a1a',
-        },
-        'glass-border': 'rgba(255, 255, 255, 0.08)',
-        'glass-surface': 'rgba(20, 20, 20, 0.6)',
+        bg: withOpacity('--color-bg'),
+        surface: withOpacity('--color-surface'),
+        primary: withOpacity('--color-primary'),
+        accent: withOpacity('--color-accent'),
+        text: withOpacity('--color-text'),
+        muted: withOpacity('--color-muted'),
+        border: withOpacity('--color-border'),
+        success: withOpacity('--color-success'),
+        warning: withOpacity('--color-warning'),
+        danger: withOpacity('--color-danger')
       },
       fontFamily: {
-        display: ['Inter Tight', 'Inter', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['Fira Code', 'JetBrains Mono', 'monospace'],
+        display: ['"Space Grotesk"', 'Inter Tight', 'system-ui', 'sans-serif'],
+        body: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       boxShadow: {
-        'glow': '0 0 30px rgba(129, 140, 248, 0.15)',
-        'glow-sm': '0 0 15px rgba(129, 140, 248, 0.1)',
-        'glow-md': '0 0 20px rgba(129, 140, 248, 0.12)',
-        'card-hover': '0 20px 40px -10px rgba(0, 0, 0, 0.5)',
-        'glass': '0 4px 30px rgba(0, 0, 0, 0.2)',
+        'card': 'var(--shadow-card)',
+        'card-hover': 'var(--shadow-card-hover)',
+        'soft': 'var(--shadow-soft)',
+        'glow': '0 0 24px rgba(255, 122, 0, 0.25)',
+        'glow-sm': '0 0 14px rgba(255, 122, 0, 0.18)'
+      },
+      borderRadius: {
+        'sm': 'var(--radius-sm)',
+        'md': 'var(--radius-md)',
+        'lg': 'var(--radius-lg)'
       },
       backdropBlur: {
         'xs': '2px',

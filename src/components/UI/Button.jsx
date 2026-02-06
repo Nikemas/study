@@ -1,48 +1,43 @@
 import PropTypes from 'prop-types';
-import { Loader2 } from 'lucide-react';
+import { cn } from '../../utils/themeUtils';
 
-export const Button = ({
-    children,
-    variant = 'primary',
-    size = 'md',
-    className = '',
-    isLoading = false,
-    disabled,
-    ...props
-}) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
-
-    const variants = {
-        primary: 'bg-primary hover:bg-primary-hover text-white focus:ring-primary',
-        secondary: 'bg-secondary hover:bg-secondary-hover text-white focus:ring-secondary',
-        ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
-        danger: 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-500',
-    };
-
-    const sizes = {
-        sm: 'h-8 px-3 text-sm',
-        md: 'h-10 px-4 py-2',
-        lg: 'h-12 px-6 text-lg',
-        icon: 'h-10 w-10',
-    };
-
-    return (
-        <button
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-            disabled={disabled || isLoading}
-            {...props}
-        >
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {children}
-        </button>
-    );
+const variants = {
+  primary: 'bg-primary text-white hover:brightness-110 shadow-card',
+  secondary: 'bg-surface text-text border border-border hover:bg-border/40',
+  ghost: 'bg-transparent text-text hover:bg-border/30',
 };
 
+const sizes = {
+  sm: 'px-3 py-2 text-xs',
+  md: 'px-4 py-2.5 text-sm',
+  lg: 'px-5 py-3 text-base'
+};
+
+export const Button = ({
+  variant = 'primary',
+  size = 'md',
+  className,
+  type = 'button',
+  disabled,
+  ...props
+}) => (
+  <button
+    type={type}
+    disabled={disabled}
+    className={cn(
+      'inline-flex items-center justify-center gap-2 rounded-md font-semibold transition focus-ring disabled:opacity-50 disabled:pointer-events-none',
+      variants[variant],
+      sizes[size],
+      className
+    )}
+    {...props}
+  />
+);
+
 Button.propTypes = {
-    children: PropTypes.node,
-    variant: PropTypes.oneOf(['primary', 'secondary', 'ghost', 'danger']),
-    size: PropTypes.oneOf(['sm', 'md', 'lg', 'icon']),
-    className: PropTypes.string,
-    isLoading: PropTypes.bool,
-    disabled: PropTypes.bool,
+  variant: PropTypes.oneOf(['primary', 'secondary', 'ghost']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg']),
+  className: PropTypes.string,
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
 };

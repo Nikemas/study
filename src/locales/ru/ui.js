@@ -7,9 +7,27 @@ const ruUI = {
     subtitle: 'AI-помощник по веб-разработке'
   },
   tabs: {
+    dashboard: 'Дашборд',
     chat: 'Чат',
     history: 'История',
     knowledge: 'База знаний'
+  },
+  dashboard: {
+    title: 'Дашборд',
+    subtitle: 'Отслеживайте прогресс и продолжайте обучение',
+    newChat: 'Новый чат',
+    progress: 'Прогресс',
+    actions: 'Быстрые действия',
+    continue: 'Продолжить обучение',
+    history: 'История диалогов',
+    recentLessons: 'Недавние уроки',
+    openKnowledge: 'Открыть базу',
+    recentChats: 'Последние чаты',
+    openHistory: 'Открыть историю',
+    noMaterials: 'Пока нет материалов',
+    noMaterialsHint: 'Начните обучение, и уроки появятся здесь.',
+    noChats: 'Пока нет чатов',
+    noChatsHint: 'Начните диалог с AI, и он появится здесь.'
   },
   chat: {
     inputLabel: 'Введите ваш вопрос',
@@ -25,6 +43,7 @@ const ruUI = {
   },
   history: {
     title: 'История диалогов',
+    subtitle: 'Просматривайте и управляйте историями ваших диалогов',
     empty: 'История диалогов пуста',
     emptyHint: 'Начните новый диалог, и он появится здесь',
     listLabel: 'Список диалогов',
@@ -35,7 +54,9 @@ const ruUI = {
     deleteHint: 'Нажмите ещё раз для удаления'
   },
   knowledge: {
+    title: 'База знаний',
     subtitle: 'Изучайте веб-разработку от основ до продвинутых тем',
+    library: 'Библиотека',
     materialsLabel: 'Учебные материалы',
     noMaterials: 'Материалы не найдены',
     totalCourses: 'Всего курсов',

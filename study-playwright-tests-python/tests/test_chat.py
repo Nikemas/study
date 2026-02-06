@@ -10,6 +10,7 @@ from playwright.sync_api import Page
 from pages import MainPage, ChatPage
 
 
+@pytest.mark.regression
 @pytest.mark.chat
 class TestChat:
     """Функциональные тесты чата"""

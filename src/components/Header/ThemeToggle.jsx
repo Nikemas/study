@@ -11,10 +11,7 @@ export const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className={`p-2 rounded-lg transition ${theme === 'dark'
-        ? 'bg-gray-700 hover:bg-gray-600'
-        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-      }`}
+      className="p-2 rounded-lg transition bg-border/30 hover:bg-border/50 text-text"
       aria-label={theme === 'dark' ? t('theme.enableLight') : t('theme.enableDark')}
       title={theme === 'dark' ? t('theme.light') : t('theme.dark')}
     >

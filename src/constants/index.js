@@ -12,6 +12,7 @@ export const ROLES = {
 };
 
 export const TABS = {
+  DASHBOARD: 'dashboard',
   CHAT: 'chat',
   HISTORY: 'history',
   KNOWLEDGE: 'knowledge',

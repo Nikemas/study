@@ -14,7 +14,7 @@ export const LoadingIndicator = () => {
       <div
         className={`${themeClasses.card(theme)} border rounded-lg p-4 flex items-center gap-2 shadow-sm`}
       >
-        <Loader2 className="w-4 h-4 animate-spin text-indigo-600" aria-hidden="true" />
+        <Loader2 className="w-4 h-4 animate-spin text-primary" aria-hidden="true" />
         <span className={`${themeClasses.textSecondary(theme)} text-sm`}>
           {t('chat.thinking')}
         </span>

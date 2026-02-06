@@ -23,23 +23,27 @@ def browser_context_args(browser_context_args):
         "base_url": BASE_URL,
         "viewport": {"width": 1280, "height": 720},
         "locale": "ru-RU",
+        "storage_state": {"origins": [{"origin": "http://localhost:3000", "localStorage": [{"name": "onboarding_completed", "value": "true"}]}]},
     }
 
 
 @pytest.fixture
 def page(page: Page):
     """
-    Фикстура для страницы с настройками по умолчанию.
-    Автоматически закрывается после каждого теста.
+    Page fixture with default timeouts and onboarding modal disabled.
     """
-    # Устанавливаем таймауты
-    page.set_default_timeout(10000)  # 10 секунд
-    page.set_default_navigation_timeout(30000)  # 30 секунд для навигации
-    
+    # Disable onboarding modal for all tests
+    page.add_init_script(
+        "() => { try { window.localStorage.setItem('onboarding_completed', 'true'); } catch (e) {} }"
+    )
+    # Default timeouts
+    page.set_default_timeout(10000)  # 10 seconds
+    page.set_default_navigation_timeout(30000)  # 30 seconds for navigation
+
     yield page
-    
-    # Cleanup после теста (если нужно)
-    # page.close() - не нужно, pytest-playwright делает это автоматически
+
+    # Cleanup after test if needed
+    # page.close() - pytest-playwright handles this automatically
 
 
 @pytest.fixture(scope="session")

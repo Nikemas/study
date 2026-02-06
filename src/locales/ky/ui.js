@@ -7,9 +7,27 @@ export default {
     subtitle: 'Веб-иштеп чыгуу боюнча AI жардамчы'
   },
   tabs: {
+    dashboard: 'Башкаруу',
     chat: 'Чат',
     history: 'Тарых',
     knowledge: 'Билим базасы'
+  },
+  dashboard: {
+    title: 'Башкаруу',
+    subtitle: 'Прогрессти көзөмөлдөп, окууну улантыңыз',
+    newChat: 'Жаңы чат',
+    progress: 'Прогресс',
+    actions: 'Тез аракеттер',
+    continue: 'Окууну улантуу',
+    history: 'Чат тарыхы',
+    recentLessons: 'Акыркы сабактар',
+    openKnowledge: 'Базаны ачуу',
+    recentChats: 'Акыркы чаттар',
+    openHistory: 'Тарыхты ачуу',
+    noMaterials: 'Азырынча материалдар жок',
+    noMaterialsHint: 'Окууну баштасаңыз, сабактар бул жерде чыгат.',
+    noChats: 'Азырынча чаттар жок',
+    noChatsHint: 'AI менен диалог баштаңыз.'
   },
   chat: {
     inputLabel: 'Суроону жазыңыз',
@@ -25,6 +43,7 @@ export default {
   },
   history: {
     title: 'Диалогдордун тарыхы',
+    subtitle: 'Диалог тарыхын карап, башкаруу',
     empty: 'Диалогдордун тарыхы бош',
     emptyHint: 'Жаңы диалог баштаңыз, ал бул жерде пайда болот',
     listLabel: 'Диалогдордун тизмеси',
@@ -35,6 +54,8 @@ export default {
     deleteHint: 'Өчүрүү үчүн дагы бир жолу басыңыз'
   },
   knowledge: {
+    title: 'Билим базасы',
+    library: 'Китепкана',
     subtitle: 'Веб-иштеп чыгууну негиздерден алдыңкы темаларга чейин үйрөнүңүз',
     materialsLabel: 'Окуу материалдары',
     noMaterials: 'Материалдар табылган жок',

@@ -25,11 +25,33 @@ class MainPage:
         self.theme_toggle = page.get_by_role("button", name=re.compile(r"включить.*тему", re.IGNORECASE))
     
     def goto(self):
-        """Открыть главную страницу приложения"""
+        """Open the main app page."""
+        # Ensure onboarding is disabled for the app load
+        self.page.add_init_script(
+            "() => { try { window.localStorage.setItem('onboarding_completed', 'true'); } catch (e) {} }"
+        )
         self.page.goto("/")
-        # Ждем, пока страница полностью загрузится
+        # Wait for app to settle
         self.page.wait_for_load_state("networkidle")
-    
+        self.dismiss_onboarding_if_present()
+
+    def dismiss_onboarding_if_present(self):
+        """Close onboarding modal if it appears."""
+        marker = self.page.get_by_text("AI Study Platform", exact=False)
+        if marker.count() == 0 or not marker.first.is_visible():
+            return
+
+        close_button = self.page.locator("button.absolute.top-4.right-4")
+        if close_button.count() > 0 and close_button.first.is_visible():
+            close_button.first.click()
+            self.page.wait_for_timeout(150)
+            return
+
+        # Fallback: try clicking primary action button in modal
+        primary_button = self.page.locator("div.fixed.inset-0 button").last
+        if primary_button.is_visible():
+            primary_button.click()
+
     def open_chat(self):
         """Переключить на вкладку 'Чат'"""
         self.chat_tab.click()

@@ -8,6 +8,8 @@ const STORAGE_KEYS = {
   LANGUAGE: 'app_language',
   GAMIFICATION: 'app_gamification',
   ACHIEVEMENTS: 'app_achievements',
+  SOUND_ENABLED: 'sound_enabled',
+  GROQ_API_KEY: 'groq_api_key',
 };
 
 // Theme
@@ -35,6 +37,10 @@ export const getChatHistory = () => {
 };
 
 export const saveCurrentChatId = (chatId) => {
+  if (chatId === null) {
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_CHAT);
+    return;
+  }
   localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT, chatId);
 };
 
@@ -85,4 +91,27 @@ export const getAchievements = () => {
     console.error('Ошибка при чтении достижений:', error);
     return [];
   }
+};
+
+// Sound settings
+export const saveSoundEnabled = (value) => {
+  localStorage.setItem(STORAGE_KEYS.SOUND_ENABLED, String(value));
+};
+
+export const getSoundEnabled = () => {
+  const value = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
+  return value === null ? true : value !== 'false';
+};
+
+// API key
+export const saveGroqApiKey = (key) => {
+  if (key) {
+    localStorage.setItem(STORAGE_KEYS.GROQ_API_KEY, key);
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.GROQ_API_KEY);
+  }
+};
+
+export const getGroqApiKey = () => {
+  return localStorage.getItem(STORAGE_KEYS.GROQ_API_KEY) || '';
 };

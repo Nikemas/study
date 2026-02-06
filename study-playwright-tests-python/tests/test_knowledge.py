@@ -10,6 +10,7 @@ from playwright.sync_api import Page, expect
 from pages import MainPage, KnowledgePage
 
 
+@pytest.mark.regression
 @pytest.mark.knowledge
 class TestKnowledge:
     """Тесты базы знаний"""

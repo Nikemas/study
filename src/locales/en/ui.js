@@ -7,9 +7,27 @@ export default {
     subtitle: 'AI assistant for web development'
   },
   tabs: {
+    dashboard: 'Dashboard',
     chat: 'Chat',
     history: 'History',
     knowledge: 'Knowledge Base'
+  },
+  dashboard: {
+    title: 'Dashboard',
+    subtitle: 'Track your progress and jump back in',
+    newChat: 'New Chat',
+    progress: 'Progress',
+    actions: 'Quick Actions',
+    continue: 'Continue Learning',
+    history: 'Chat History',
+    recentLessons: 'Recent Lessons',
+    openKnowledge: 'Open Knowledge',
+    recentChats: 'Recent Chats',
+    openHistory: 'Open History',
+    noMaterials: 'No materials yet',
+    noMaterialsHint: 'Start learning to see lessons here.',
+    noChats: 'No chats yet',
+    noChatsHint: 'Start a chat to see it here.'
   },
   chat: {
     inputLabel: 'Enter your question',
@@ -25,6 +43,7 @@ export default {
   },
   history: {
     title: 'Chat History',
+    subtitle: 'View and manage your conversation history',
     empty: 'Chat history is empty',
     emptyHint: 'Start a new chat and it will appear here',
     listLabel: 'Chat list',
@@ -35,7 +54,9 @@ export default {
     deleteHint: 'Click again to delete'
   },
   knowledge: {
+    title: 'Knowledge Base',
     subtitle: 'Learn web development from basics to advanced topics',
+    library: 'Library',
     materialsLabel: 'Learning materials',
     noMaterials: 'No materials found',
     totalCourses: 'Total courses',

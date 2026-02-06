@@ -12,6 +12,7 @@ from playwright.sync_api import Page, expect
 from pages import MainPage, ChatPage, KnowledgePage
 
 
+@pytest.mark.regression
 @pytest.mark.smoke
 class TestSmoke:
     """Smoke тесты для Educational AI Platform"""

@@ -1,11 +1,11 @@
 // src/services/aiService.js
-// AI сервис с поддержкой Groq API
+// AI ������ � ���������� Groq API
 
 import { AI_CONFIG } from '../config/aiConfig';
 import { createSystemPrompt } from '../config/systemPrompt';
 import { buildContextFromKnowledge } from './contextBuilder';
+import { getGroqApiKey, saveGroqApiKey } from './storageService';
 
-// Коды ошибок для локализации
 export const API_ERROR_CODES = {
   API_KEY_NOT_FOUND: 'errors.apiKeyNotFound',
   INVALID_API_KEY: 'errors.invalidApiKey',
@@ -15,21 +15,14 @@ export const API_ERROR_CODES = {
   INVALID_RESPONSE: 'errors.invalidResponse'
 };
 
-// Получение API ключа из localStorage или env
 export const getApiKey = () => {
-  return localStorage.getItem('groq_api_key') || process.env.REACT_APP_GROQ_API_KEY || '';
+  return getGroqApiKey() || process.env.REACT_APP_GROQ_API_KEY || '';
 };
 
-// Сохранение API ключа в localStorage
 export const saveApiKey = (key) => {
-  if (key) {
-    localStorage.setItem('groq_api_key', key);
-  } else {
-    localStorage.removeItem('groq_api_key');
-  }
+  saveGroqApiKey(key);
 };
 
-// Проверка наличия API ключа
 export const hasApiKey = () => {
   return Boolean(getApiKey());
 };
