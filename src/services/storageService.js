@@ -10,6 +10,11 @@ const STORAGE_KEYS = {
   ACHIEVEMENTS: 'app_achievements',
   SOUND_ENABLED: 'sound_enabled',
   GROQ_API_KEY: 'groq_api_key',
+  PRACTICE_STATE: 'learning_practice_state',
+  LEARNING_DATA_VERSION: 'learning_data_version',
+  USER_PROGRESS_V2: 'user_progress_v2', // NEW: прогресс V2
+  KNOWLEDGE_PROGRESS: 'knowledgeProgress', // V1 data
+  PRACTICE_PROGRESS: 'practiceProgress', // V1 data
 };
 
 // Theme
@@ -114,4 +119,66 @@ export const saveGroqApiKey = (key) => {
 
 export const getGroqApiKey = () => {
   return localStorage.getItem(STORAGE_KEYS.GROQ_API_KEY) || '';
+};
+
+// Practice state
+export const savePracticeState = (state) => {
+  localStorage.setItem(STORAGE_KEYS.PRACTICE_STATE, JSON.stringify(state));
+};
+
+export const getPracticeState = () => {
+  try {
+    const value = localStorage.getItem(STORAGE_KEYS.PRACTICE_STATE);
+    return value ? JSON.parse(value) : null;
+  } catch (error) {
+    console.error('Failed to read practice state:', error);
+    return null;
+  }
+};
+
+// Learning data version
+export const saveLearningDataVersion = (version) => {
+  localStorage.setItem(STORAGE_KEYS.LEARNING_DATA_VERSION, String(version));
+};
+
+export const getLearningDataVersion = () => {
+  const value = localStorage.getItem(STORAGE_KEYS.LEARNING_DATA_VERSION);
+  return value ? Number(value) : null;
+};
+
+// V2: User Progress
+export const saveUserProgress = (progress) => {
+  localStorage.setItem(STORAGE_KEYS.USER_PROGRESS_V2, JSON.stringify(progress));
+};
+
+export const getUserProgress = () => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.USER_PROGRESS_V2);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error reading user progress V2:', error);
+    return null;
+  }
+};
+
+// V1: Knowledge Progress (for migration)
+export const getV1KnowledgeProgress = () => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.KNOWLEDGE_PROGRESS);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error reading V1 knowledge progress:', error);
+    return null;
+  }
+};
+
+// V1: Practice Progress (for migration)
+export const getV1PracticeProgress = () => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.PRACTICE_PROGRESS);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error reading V1 practice progress:', error);
+    return null;
+  }
 };

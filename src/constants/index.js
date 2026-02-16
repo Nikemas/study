@@ -16,6 +16,7 @@ export const TABS = {
   CHAT: 'chat',
   HISTORY: 'history',
   KNOWLEDGE: 'knowledge',
+  LEARNING: 'learning', // NEW: V2 Learning Path
 };
 
 export const LIMITS = {

@@ -1,12 +1,14 @@
 // src/App.jsx
 
-import { useState, useCallback, useMemo, lazy, Suspense } from 'react';
+import { useState, useCallback, useMemo, lazy, Suspense, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MigrationService } from './services/migrationService';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { GamificationProvider } from './contexts/GamificationContext';
+import { LearningProgressProvider } from './contexts/LearningProgressContext';
 import { Header } from './components/Header/Header';
 import { MobileNavigation } from './components/Header/MobileNavigation';
 import { ToastContainer } from './components/UI/ToastContainer';
@@ -38,6 +40,7 @@ const ChatView = lazy(() => import('./components/Chat/ChatView').then(m => ({ de
 const HistoryView = lazy(() => import('./components/History/HistoryView').then(m => ({ default: m.HistoryView })));
 const KnowledgeView = lazy(() => import('./components/Knowledge/KnowledgeView').then(m => ({ default: m.KnowledgeView })));
 const DashboardView = lazy(() => import('./components/Dashboard/DashboardView').then(m => ({ default: m.DashboardView })));
+const LearningView = lazy(() => import('./components/Learning/LearningView'));
 
 // Компонент загрузки
 const LoadingFallback = () => (
@@ -173,6 +176,20 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
                   />
                 </motion.div>
               )}
+
+              {activeTab === TABS.LEARNING && (
+                <motion.div
+                  key="learning"
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full"
+                >
+                  <LearningView />
+                </motion.div>
+              )}
           </AnimatePresence>
         </Suspense>
       </AppShell>
@@ -194,6 +211,7 @@ function AppContent({ pendingAchievement, onAchievementClose }) {
 // Обертка с GamificationProvider для управления состоянием достижений
 function AppWithGamification() {
   const [pendingAchievement, setPendingAchievement] = useState(null);
+  const [migrationStatus, setMigrationStatus] = useState('checking');
 
   const handleAchievementUnlock = useCallback((achievement) => {
     setPendingAchievement(achievement);
@@ -203,14 +221,49 @@ function AppWithGamification() {
     setPendingAchievement(null);
   }, []);
 
+  // Миграция V1 → V2 при первом запуске
+  useEffect(() => {
+    const checkAndMigrate = async () => {
+      if (MigrationService.needsMigration()) {
+        console.log('Migration needed, starting...');
+        const result = await MigrationService.migrate();
+
+        if (result.success) {
+          console.log('✅ Migration completed successfully');
+          setMigrationStatus('completed');
+        } else {
+          console.error('❌ Migration failed:', result.message);
+          setMigrationStatus('failed');
+        }
+      } else {
+        setMigrationStatus('not_needed');
+      }
+    };
+
+    checkAndMigrate();
+  }, []);
+
+  if (migrationStatus === 'checking') {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Проверка данных...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <GamificationProvider onAchievementUnlock={handleAchievementUnlock}>
-      <AppContent
-        pendingAchievement={pendingAchievement}
-        onAchievementClose={handleAchievementClose}
-      />
-      <OnboardingModal />
-    </GamificationProvider>
+    <LearningProgressProvider>
+      <GamificationProvider onAchievementUnlock={handleAchievementUnlock}>
+        <AppContent
+          pendingAchievement={pendingAchievement}
+          onAchievementClose={handleAchievementClose}
+        />
+        <OnboardingModal />
+      </GamificationProvider>
+    </LearningProgressProvider>
   );
 }
 
