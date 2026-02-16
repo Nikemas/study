@@ -12,6 +12,7 @@ import htmlTables from './materials/08-tables';
 import practiceFirstPage from './practice/task-html-1';
 import practiceResume from './practice/task-html-2';
 import practiceLanding from './practice/task-html-3';
+import practiceRegistrationForm from './practice/task-html-4';
 import practiceFinalProject from './practice/task-html-5';
 
 export default [
@@ -146,8 +147,21 @@ export default [
     }
   },
   {
-    id: 'html-tables',
+    id: 'html-practice-4',
     order: 11,
+    title: 'Практика: Форма регистрации с валидацией',
+    type: 'practice',
+    estimatedMinutes: 60,
+    practice: practiceRegistrationForm,
+    completionCriteria: {
+      readMaterial: false,
+      passQuiz: false,
+      completePractice: true
+    }
+  },
+  {
+    id: 'html-tables',
+    order: 12,
     title: 'Таблицы в HTML',
     type: 'theory',
     estimatedMinutes: 45,
@@ -160,7 +174,7 @@ export default [
   },
   {
     id: 'html-final-project',
-    order: 12,
+    order: 13,
     title: 'Финальный проект: Сайт-визитка',
     type: 'practice',
     estimatedMinutes: 90,
