@@ -5,11 +5,14 @@ import htmlTextElements from './materials/03-text-elements';
 import htmlLists from './materials/04-lists';
 import htmlLinksImages from './materials/05-links-images';
 import htmlSemanticTags from './materials/06-semantic-tags';
+import htmlForms from './materials/07-forms';
+import htmlTables from './materials/08-tables';
 
 // Импорт практических заданий
 import practiceFirstPage from './practice/task-html-1';
 import practiceResume from './practice/task-html-2';
 import practiceLanding from './practice/task-html-3';
+import practiceFinalProject from './practice/task-html-5';
 
 export default [
   {
@@ -123,6 +126,45 @@ export default [
     type: 'practice',
     estimatedMinutes: 60,
     practice: practiceLanding,
+    completionCriteria: {
+      readMaterial: false,
+      passQuiz: false,
+      completePractice: true
+    }
+  },
+  {
+    id: 'html-forms',
+    order: 10,
+    title: 'Формы в HTML',
+    type: 'theory',
+    estimatedMinutes: 55,
+    materials: [htmlForms],
+    completionCriteria: {
+      readMaterial: true,
+      passQuiz: false,
+      completePractice: false
+    }
+  },
+  {
+    id: 'html-tables',
+    order: 11,
+    title: 'Таблицы в HTML',
+    type: 'theory',
+    estimatedMinutes: 45,
+    materials: [htmlTables],
+    completionCriteria: {
+      readMaterial: true,
+      passQuiz: false,
+      completePractice: false
+    }
+  },
+  {
+    id: 'html-final-project',
+    order: 12,
+    title: 'Финальный проект: Сайт-визитка',
+    type: 'practice',
+    estimatedMinutes: 90,
+    practice: practiceFinalProject,
     completionCriteria: {
       readMaterial: false,
       passQuiz: false,
