@@ -19,6 +19,9 @@ export const XP_REWARDS = {
   MESSAGE: 1,
   LESSON: 10,
   TEST: 20,
+  PRACTICE_ATTEMPT: 5,
+  PRACTICE_PASS: 35,
+  STAGE_COMPLETE: 40,
 };
 
 export { ACHIEVEMENTS_CONFIG };
@@ -30,5 +33,8 @@ export const getDefaultGamificationData = () => ({
     messages: 0,
     lessons: 0,
     tests: 0,
+    practiceAttempts: 0,
+    practicePasses: 0,
+    stages: 0,
   },
 });

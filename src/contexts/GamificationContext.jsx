@@ -80,6 +80,9 @@ export const GamificationProvider = ({ children, onAchievementUnlock }) => {
       const statKey = type === 'MESSAGE' ? 'messages'
         : type === 'LESSON' ? 'lessons'
           : type === 'TEST' ? 'tests'
+            : type === 'PRACTICE_ATTEMPT' ? 'practiceAttempts'
+              : type === 'PRACTICE_PASS' ? 'practicePasses'
+                : type === 'STAGE_COMPLETE' ? 'stages'
             : null;
 
       const newStats = statKey

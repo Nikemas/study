@@ -21,7 +21,7 @@ export const Quiz = ({ quiz, onClose, onComplete }) => {
   const question = quiz.questions[currentQuestion];
   const isLastQuestion = currentQuestion === quiz.questions.length - 1;
   const isCorrect = selectedAnswer === question?.correctAnswer;
-  const passThreshold = 60;
+  const passThreshold = 70;
 
   const handleSelectAnswer = useCallback((index) => {
     if (!isAnswered) {

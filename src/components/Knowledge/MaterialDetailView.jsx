@@ -13,11 +13,11 @@ import { LoadingIndicator } from '../Chat/LoadingIndicator';
 import { useChat } from '../../hooks/useChat';
 
 const CATEGORY_CONFIG = {
-  python: { emoji: '??', colorClass: 'text-blue-400', bgClass: 'from-blue-600/20 to-yellow-500/20', borderClass: 'border-blue-500/20' },
-  javascript: { emoji: '?', colorClass: 'text-yellow-400', bgClass: 'from-yellow-400/20 to-orange-500/20', borderClass: 'border-yellow-500/20' },
-  html: { emoji: '??', colorClass: 'text-orange-400', bgClass: 'from-orange-500/20 to-red-500/20', borderClass: 'border-orange-500/20' },
-  css: { emoji: '??', colorClass: 'text-indigo-400', bgClass: 'from-indigo-500/20 to-blue-500/20', borderClass: 'border-indigo-500/20' },
-  react: { emoji: '??', colorClass: 'text-cyan-400', bgClass: 'from-cyan-500/20 to-blue-500/20', borderClass: 'border-cyan-500/20' }
+  python: { label: 'PY', colorClass: 'text-blue-400', bgClass: 'from-blue-600/20 to-yellow-500/20', borderClass: 'border-blue-500/20' },
+  javascript: { label: 'JS', colorClass: 'text-yellow-400', bgClass: 'from-yellow-400/20 to-orange-500/20', borderClass: 'border-yellow-500/20' },
+  html: { label: 'HTML', colorClass: 'text-orange-400', bgClass: 'from-orange-500/20 to-red-500/20', borderClass: 'border-orange-500/20' },
+  css: { label: 'CSS', colorClass: 'text-indigo-400', bgClass: 'from-indigo-500/20 to-blue-500/20', borderClass: 'border-indigo-500/20' },
+  react: { label: 'RE', colorClass: 'text-cyan-400', bgClass: 'from-cyan-500/20 to-blue-500/20', borderClass: 'border-cyan-500/20' }
 };
 
 export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
@@ -34,10 +34,10 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
     id: generateId(),
     role: 'assistant',
     content: language === 'en'
-      ? `Hi! I'll help you study the topic **"${material.topic}"**. Ask any questions about this topic — I'll explain in detail!`
+      ? `Hi! I'll help you study the topic **"${material.topic}"**. Ask any questions about this topic â€” I'll explain in detail!`
       : language === 'ky'
-        ? `Ñàëàìàò! Ñåí **"${material.topic}"** òåìàñûí ?éð?í??ã? æàðäàì÷û áîëîì. Áóë òåìà áîþí÷à êààëàãàí ñóðîî áåð — ò?ø?íä?ð?ì!`
-        : `Ïðèâåò! ß ïîìîãó òåáå èçó÷èòü òåìó **"${material.topic}"**. Çàäàâàé ëþáûå âîïðîñû ïî ýòîé òåìå — îáúÿñíþ ïîäðîáíî!`,
+        ? `Ð¡Ð°Ð»Ð°Ð¼Ð°Ñ‚! Ð¡ÐµÐ½ **"${material.topic}"** Ñ‚ÐµÐ¼Ð°ÑÑ‹Ð½ ?Ð¹Ñ€?Ð½??Ð³? Ð¶Ð°Ñ€Ð´Ð°Ð¼Ñ‡Ñ‹ Ð±Ð¾Ð»Ð¾Ð¼. Ð‘ÑƒÐ» Ñ‚ÐµÐ¼Ð° Ð±Ð¾ÑŽÐ½Ñ‡Ð° ÐºÐ°Ð°Ð»Ð°Ð³Ð°Ð½ ÑÑƒÑ€Ð¾Ð¾ Ð±ÐµÑ€ â€” Ñ‚?Ñˆ?Ð½Ð´?Ñ€?Ð¼!`
+        : `ÐŸÑ€Ð¸Ð²ÐµÑ‚! Ð¯ Ð¿Ð¾Ð¼Ð¾Ð³Ñƒ Ñ‚ÐµÐ±Ðµ Ð¸Ð·ÑƒÑ‡Ð¸Ñ‚ÑŒ Ñ‚ÐµÐ¼Ñƒ **"${material.topic}"**. Ð—Ð°Ð´Ð°Ð²Ð°Ð¹ Ð»ÑŽÐ±Ñ‹Ðµ Ð²Ð¾Ð¿Ñ€Ð¾ÑÑ‹ Ð¿Ð¾ ÑÑ‚Ð¾Ð¹ Ñ‚ÐµÐ¼Ðµ â€” Ð¾Ð±ÑŠÑÑÐ½ÑŽ Ð¿Ð¾Ð´Ñ€Ð¾Ð±Ð½Ð¾!`,
     timestamp: new Date()
   }), [language, material.topic]);
 
@@ -73,8 +73,8 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
       <div className={`w-full max-w-7xl lg:h-[90vh] h-full ${isDark ? 'glass' : 'light-glass'} rounded-3xl shadow-2xl flex flex-col overflow-hidden`}>
         <div className={`flex items-center justify-between p-5 border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
           <div className="flex items-center gap-3">
-            <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${config.bgClass} border ${config.borderClass} flex items-center justify-center`}>
-              <span className="text-xl" role="img" aria-label={material.category}>{config.emoji}</span>
+            <div className={`min-w-11 h-11 px-3 rounded-xl bg-gradient-to-br ${config.bgClass} border ${config.borderClass} flex items-center justify-center`}>
+              <span className={`text-xs font-bold tracking-wider ${config.colorClass}`}>{config.label}</span>
             </div>
             <div>
               <h2 className={`text-xl font-bold font-display ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -140,7 +140,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
                         </pre>
                         {example.explanation && (
                           <div className={`px-4 py-2 text-xs ${isDark ? 'bg-white/3 text-gray-400' : 'bg-gray-50 text-gray-600'}`}>
-                            ?? {example.explanation}
+                            Note: {example.explanation}
                           </div>
                         )}
                       </div>
@@ -155,7 +155,7 @@ export const MaterialDetailView = ({ material, onClose, onProgressChange }) => {
                   <ul className="space-y-2">
                     {material.keyPoints.map((point, idx) => (
                       <li key={idx} className={`flex items-start gap-2 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                        <span className={`mt-0.5 ${config.colorClass}`}>•</span>
+                        <span className={`mt-0.5 ${config.colorClass}`}>â€¢</span>
                         {point}
                       </li>
                     ))}
@@ -234,3 +234,4 @@ MaterialDetailView.propTypes = {
   onClose: PropTypes.func.isRequired,
   onProgressChange: PropTypes.func
 };
+

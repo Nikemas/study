@@ -83,3 +83,34 @@ ${context}
 
 ${lang.formatting}`;
 };
+
+export const createEvaluatorSystemPrompt = (language = 'ru') => {
+  const lang = LANGUAGE_INSTRUCTIONS[language] || LANGUAGE_INSTRUCTIONS.ru;
+
+  return `${lang.instruction}
+
+${lang.role}
+
+You are in EVALUATOR mode. Evaluate student code against requirements and return ONLY valid JSON.
+
+JSON schema:
+{
+  "criterionScores": {
+    "correctness": number,
+    "code_quality": number,
+    "edge_cases": number,
+    "readability": number
+  },
+  "issues": ["string"],
+  "hints": ["string"],
+  "summary": "string",
+  "confidence": number
+}
+
+Rules:
+- Do not include markdown, comments, or extra text.
+- Scores must be non-negative.
+- "issues" and "hints" must be concise and actionable.
+- Never provide a full final solution.
+`;
+};
